@@ -4,21 +4,21 @@ import FileSelectionArea from '@/components/playground/FileSelectionArea';
 import InputSettings from '@/components/playground/input-settings/InputSettings';
 import OuptutInfo from '@/components/playground/OuptutInfo';
 import SidePanel from '@/components/playground/SidePanel';
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 
-const lensArgumentsStore = useLensArgumentsStore();
-const { loadSourceImage, processDistortion } = lensArgumentsStore;
+const distortionStore = useDistortionStore();
+const { loadSourceImage, processDistortion } = distortionStore;
 
 const onFileSelected = (file: File) => loadSourceImage(file);
 </script>
 
 <template>
   <FileSelectionArea
-    v-if="!lensArgumentsStore.sourceImage && !lensArgumentsStore.isLoadingSourceImage"
+    v-if="!distortionStore.sourceImage && !distortionStore.isLoadingSourceImage"
     @file-selected="onFileSelected"
   />
 
-  <VRow v-if="lensArgumentsStore.sourceImage" class="fill-height">
+  <VRow v-if="distortionStore.sourceImage" class="fill-height">
     <VCol cols="12" md="8" lg="9" xl="10" xxl="11" class="pa-0">
       <ImageArea />
     </VCol>

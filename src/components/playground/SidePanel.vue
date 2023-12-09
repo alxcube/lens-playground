@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 
 const selectedTab = ref(0);
 
-const lensArgumentsStore = useLensArgumentsStore();
-const { distortedImage } = storeToRefs(lensArgumentsStore);
+const distortionStore = useDistortionStore();
+const { distortedImage } = storeToRefs(distortionStore);
 
 watch(distortedImage, (val) => {
   if (val) {

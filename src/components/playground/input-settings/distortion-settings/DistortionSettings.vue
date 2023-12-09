@@ -5,15 +5,15 @@ import ControlPoints from '@/components/playground/input-settings/distortion-set
 import GenericArguments from '@/components/playground/input-settings/distortion-settings/distortion-arguments/GenericArguments';
 import PerspectiveMatrix from '@/components/playground/input-settings/distortion-settings/distortion-arguments/PerspectiveMatrix';
 import DistortionSelector from '@/components/playground/input-settings/distortion-settings/DistortionSelector';
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 import { computed, watch } from 'vue';
 import { ReversePixelMapperFactoriesPoolKeyMap } from '../../../../../../lens';
 
 const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
 
-const lensArgumentsStore = useLensArgumentsStore();
-const { distortionName, distortionArguments } = storeToRefs(lensArgumentsStore);
+const distortionStore = useDistortionStore();
+const { distortionName, distortionArguments } = storeToRefs(distortionStore);
 
 const argumentsTitle = computed(() => {
   switch (distortionName.value) {
@@ -84,7 +84,7 @@ watch(
 
 <template>
   <div class="distortion-settings">
-    <DistortionSelector v-model="lensArgumentsStore.distortionName" :disabled="props.disabled" />
+    <DistortionSelector v-model="distortionStore.distortionName" :disabled="props.disabled" />
 
     <h5>{{ argumentsTitle }}</h5>
 

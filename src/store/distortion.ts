@@ -19,7 +19,7 @@ export interface DistortionArgumentsValidationErrors {
   invalidArgs?: number[];
 }
 
-export const useLensArgumentsStore = defineStore('lensArguments', () => {
+export const useDistortionStore = defineStore('distortion', () => {
   const sourceImage = shallowRef<HTMLCanvasElement>();
   const sourceImageViewport = ref<{ x1: number; y1: number; x2: number; y2: number }>();
   const distortionName = ref<keyof ReversePixelMapperFactoriesPoolKeyMap | string>();

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ViewportLiteral from '@/components/playground/input-settings/distortion-options/viewport-settings/ViewportLiteral';
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 
@@ -32,8 +32,8 @@ const getRadioValueFromViewportOption = (
   return 'custom';
 };
 
-const lensArgumentsStore = useLensArgumentsStore();
-const { viewportOption, sourceImageViewport } = storeToRefs(lensArgumentsStore);
+const distortionStore = useDistortionStore();
+const { viewportOption, sourceImageViewport } = storeToRefs(distortionStore);
 const customViewport = ref(ViewportLiteral);
 const isEqualViewport = (vp1: ViewportLiteral, vp2: ViewportLiteral): boolean => {
   return vp1.x1 === vp2.x1 && vp1.y1 === vp2.y1 && vp1.x2 === vp2.x2 && vp1.y2 === vp2.y2;

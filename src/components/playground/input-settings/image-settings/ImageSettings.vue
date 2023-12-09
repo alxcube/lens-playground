@@ -3,20 +3,20 @@ import ColorPicker from '@/components/playground/ColorPicker';
 import ImageVieportOffset from '@/components/playground/input-settings/image-settings/ImageVieportOffset';
 import InterpolationMethodSelector from '@/components/playground/input-settings/image-settings/InterpolationMethodSelector';
 import VirtualPixelMethodSelector from '@/components/playground/input-settings/image-settings/VirtualPixelMethodSelector';
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { useFileDialog } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 
 const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
 
-const lensArgumentsStore = useLensArgumentsStore();
+const distortionStore = useDistortionStore();
 const {
   imageInterpolationMethodOption,
   imageVirtualPixelMethodOption,
   imageViewportOffsetOption,
   imageBackgroundColorOption
-} = storeToRefs(lensArgumentsStore);
-const { loadSourceImage } = lensArgumentsStore;
+} = storeToRefs(distortionStore);
+const { loadSourceImage } = distortionStore;
 
 const { open: openFileDialog, onChange: onFilesChange } = useFileDialog({ accept: 'image/*' });
 onFilesChange((files) => {

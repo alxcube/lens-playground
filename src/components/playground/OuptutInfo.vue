@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
-const lensArgumentsStore = useLensArgumentsStore();
-const { distortionDuration, distortionViewport } = storeToRefs(lensArgumentsStore);
-const { useResultAsSource } = lensArgumentsStore;
+const distortionStore = useDistortionStore();
+const { distortionDuration, distortionViewport } = storeToRefs(distortionStore);
+const { useResultAsSource } = distortionStore;
 
 const processingTimeString = computed(() => {
   if (distortionDuration.value === undefined) {

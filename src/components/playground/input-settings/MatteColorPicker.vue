@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import ColorPicker from '@/components/playground/ColorPicker';
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 
 const props = defineProps<{ disabled?: boolean }>();
 
-const lensArgumentsStore = useLensArgumentsStore();
-const { matteColorOption } = storeToRefs(lensArgumentsStore);
+const distortionStore = useDistortionStore();
+const { matteColorOption } = storeToRefs(distortionStore);
 </script>
 
 <template>

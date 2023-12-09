@@ -2,7 +2,7 @@
 import ImageViewer from '@/components/playground/image-area/ImageViewer';
 import ImageViewerMenu from '@/components/playground/image-area/ImageViewerMenu';
 import ZoomControl from '@/components/playground/image-area/ZoomControl';
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 import { computed, ref, shallowRef, watch } from 'vue';
 
@@ -11,9 +11,9 @@ const props = defineProps<{
 }>();
 const imageViewer = shallowRef<InstanceType<typeof ImageViewer>>();
 const scaleModel = ref(1);
-const lensArgumentsStore = useLensArgumentsStore();
+const distortionStore = useDistortionStore();
 const { sourceImage, distortedImage, distortionViewport, sourceImageViewport } =
-  storeToRefs(lensArgumentsStore);
+  storeToRefs(distortionStore);
 const currentTab = ref(0);
 const displayImage = computed(() => {
   return currentTab.value === 0 ? sourceImage.value : distortedImage.value;

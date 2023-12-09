@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import FilterOptions from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/FilterOptions';
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 
 const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
-const lensArgumentsStore = useLensArgumentsStore();
+const distortionStore = useDistortionStore();
 
 const { resamplerOption, filterOption, filterBlurOption, filterWindowSupportOption } =
-  storeToRefs(lensArgumentsStore);
+  storeToRefs(distortionStore);
 </script>
 
 <template>
@@ -23,7 +23,7 @@ const { resamplerOption, filterOption, filterBlurOption, filterWindowSupportOpti
 
     <VExpandTransition>
       <FilterOptions
-        v-if="lensArgumentsStore.resamplerOption === 'ewa'"
+        v-if="distortionStore.resamplerOption === 'ewa'"
         v-model="filterOption"
         v-model:filter-blur="filterBlurOption"
         v-model:filter-window-support="filterWindowSupportOption"

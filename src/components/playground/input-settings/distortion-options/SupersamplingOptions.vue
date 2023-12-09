@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLensArgumentsStore } from '@/store/lensArguments';
+import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 
@@ -16,8 +16,8 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value?: number): void;
 }>();
 
-const lensArgumentsStore = useLensArgumentsStore();
-const { outputScalingOption } = storeToRefs(lensArgumentsStore);
+const distortionStore = useDistortionStore();
+const { outputScalingOption } = storeToRefs(distortionStore);
 
 const isEnabled = ref<boolean>(false);
 watch(isEnabled, (val: boolean) => {
