@@ -47,6 +47,16 @@ const getIsError = (letter: string): boolean => {
   const offset = props.index + 'uvxy'.indexOf(letter);
   return props.errorIndexes.includes(offset);
 };
+
+const setSourcePoint = ({ x, y }: { x: number; y: number }) => {
+  uModel.value = x;
+  vModel.value = y;
+};
+
+const setDestinationPoint = ({ x, y }: { x: number; y: number }) => {
+  xModel.value = x;
+  yModel.value = y;
+};
 </script>
 
 <template>
@@ -77,6 +87,8 @@ const getIsError = (letter: string): boolean => {
     </VRow>
     <PointsMappingMenu
       :disabled="props.disabled"
+      @set-source="setSourcePoint"
+      @set-destination="setDestinationPoint"
       @delete-mapping="emit('delete-mapping', props.index)"
     />
   </div>

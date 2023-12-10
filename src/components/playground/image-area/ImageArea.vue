@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import CursorPosition from '@/components/playground/image-area/CursorPosition';
 import ImageViewer from '@/components/playground/image-area/ImageViewer';
 import ImageViewerMenu from '@/components/playground/image-area/ImageViewerMenu';
 import ZoomControl from '@/components/playground/image-area/ZoomControl';
 import { useDistortionStore } from '@/store/distortion';
+import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { storeToRefs } from 'pinia';
 import { computed, ref, shallowRef, watch } from 'vue';
 
@@ -52,6 +54,13 @@ function zoomOut() {
 function fitViewport() {
   imageViewer.value?.fitViewport();
 }
+
+const cursorPositionOverImage = ref<{ x: number | null; y: number | null }>({ x: null, y: null });
+const imagePointTransportStore = useImagePointsTransportStore();
+const { hasRequests: hasImagePointRequests } = storeToRefs(imagePointTransportStore);
+const setCursorPositionOverImage = (point: { x: number | null; y: number | null }) =>
+  (cursorPositionOverImage.value = point);
+const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null });
 </script>
 
 <template>
@@ -83,6 +92,8 @@ function fitViewport() {
       :show-axes="showAxes"
       :offset="viewportOffset"
       :image-outline="imageOutline"
+      @pointermove:image="setCursorPositionOverImage"
+      @pointerout:image="noCursorOverImage"
     />
 
     <VCardActions class="pa-0">
@@ -94,6 +105,10 @@ function fitViewport() {
           @full-size="scaleModel = 1"
           @zoom-in="zoomIn"
           @zoom-out="zoomOut"
+        />
+        <CursorPosition
+          v-if="hasImagePointRequests"
+          :image-cursor-position="cursorPositionOverImage"
         />
       </VToolbar>
     </VCardActions>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import CanvasWrapper from '@/components/playground/image-area/CanvasWrapper';
 import PanableContainer from '@/components/playground/image-area/PanableContainer';
+import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { useVModel } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
 import { computed, nextTick, ref, shallowRef } from 'vue';
 
 const props = withDefaults(
@@ -23,6 +25,8 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: 'update:scale', value: number): void;
+  (e: 'pointermove:image', value: { x: number; y: number }): void;
+  (e: 'pointerout:image'): void;
 }>();
 
 const container = shallowRef<HTMLDivElement>();
@@ -36,8 +40,8 @@ const xAxisStyle = computed(() => ({
 }));
 const offsetStyle = computed(() => {
   return {
-    marginTop: `${props.offset.y}px`,
-    marginLeft: `${props.offset.x}px`
+    top: `${props.offset.y}px`,
+    left: `${props.offset.x}px`
   };
 });
 
@@ -83,6 +87,53 @@ function zoom(zoomIn = false) {
   scaleModel.value = scaleModel.value * (zoomIn ? 1.25 : 0.8);
 }
 
+const imagePointTransportStore = useImagePointsTransportStore();
+const { hasRequests: hasImagePointRequests } = storeToRefs(imagePointTransportStore);
+const { feed: feedImagePoint } = imagePointTransportStore;
+
+function pagePointToImagePoint(pagePoint: { pageX: number; pageY: number }): {
+  x: number;
+  y: number;
+} {
+  if (!container.value) {
+    throw new Error("It shouldn't happen, but container ref is empty");
+  }
+  const { pageX, pageY } = pagePoint;
+  const { top, left } = container.value.getBoundingClientRect();
+  const containerX = pageX - left;
+  const containerY = pageY - top;
+  const scale = 1 / scaleModel.value;
+  const x = (containerX - positionModel.value.x) * scale - props.offset.x;
+  const y = (containerY - positionModel.value.y) * scale - props.offset.y;
+  return { x, y };
+}
+
+const pointerStartCoords = ref<{ pageX: number; pageY: number }>();
+
+const onContainerPointerDown = (event: PointerEvent) => {
+  const { pageX, pageY } = event;
+  pointerStartCoords.value = { pageX, pageY };
+};
+
+const onContainerPointerUp = (event: PointerEvent) => {
+  if (pointerStartCoords.value) {
+    if (
+      event.pageX === pointerStartCoords.value.pageX &&
+      event.pageY === pointerStartCoords.value.pageY &&
+      hasImagePointRequests.value
+    ) {
+      feedImagePoint(pagePointToImagePoint(event));
+    }
+  }
+};
+
+const onContainerPointerCancel = () => (pointerStartCoords.value = undefined);
+
+const onContainerPointerMove = (event: PointerEvent) =>
+  emit('pointermove:image', pagePointToImagePoint(event));
+
+const onContainerPointerLeave = () => emit('pointerout:image');
+
 defineExpose({
   fitViewport,
   zoom
@@ -90,7 +141,16 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="container" class="image-viewer-container" :class="classes">
+  <div
+    ref="container"
+    class="image-viewer-container"
+    :class="classes"
+    @pointerdown="onContainerPointerDown"
+    @pointerup="onContainerPointerUp"
+    @pointercancel="onContainerPointerCancel"
+    @pointermove="onContainerPointerMove"
+    @pointerleave="onContainerPointerLeave"
+  >
     <VSheet class="image-viewer" height="100%">
       <div v-if="props.showAxes" class="axis x" :style="xAxisStyle" />
       <div v-if="props.showAxes" class="axis y" :style="yAxisStyle" />
@@ -112,6 +172,10 @@ defineExpose({
   &.image-outline :deep(canvas) {
     outline: goldenrod 1px solid;
   }
+}
+
+.canvas-wrapper {
+  position: relative;
 }
 
 .image-viewer {
@@ -138,5 +202,9 @@ defineExpose({
     margin-top: -0.5px;
     will-change: top;
   }
+}
+
+:deep(.panable-container) {
+  position: relative;
 }
 </style>

@@ -20,10 +20,15 @@ export interface DistortionArgumentsValidationErrors {
 }
 
 export const useDistortionStore = defineStore('distortion', () => {
+  // Input image and viewport
   const sourceImage = shallowRef<HTMLCanvasElement>();
   const sourceImageViewport = ref<{ x1: number; y1: number; x2: number; y2: number }>();
+
+  // Distortion name and arguments
   const distortionName = ref<keyof ReversePixelMapperFactoriesPoolKeyMap | string>();
   const distortionArguments = ref<number[]>([]);
+
+  // distort() options
   const imageVirtualPixelMethodOption = ref<VirtualPixelMethod>(VirtualPixelMethod.TRANSPARENT);
   const imageInterpolationMethodOption = ref<InterpolationMethod>(InterpolationMethod.AVERAGE);
   const imageViewportOffsetOption = ref<[number, number]>([0, 0]);
@@ -35,13 +40,20 @@ export const useDistortionStore = defineStore('distortion', () => {
   const outputScalingOption = ref<number>();
   const viewportOption = ref<'bestFit' | { x1: number; y1: number; x2: number; y2: number }>();
   const matteColorOption = ref<string>();
+
+  // Processing states
   const isLoadingSourceImage = ref(false);
   const isProcessingDistortion = ref(false);
+
+  // Distortion results
   const distortedImage = shallowRef<HTMLCanvasElement>();
   const distortionViewport = ref<{ x1: number; y1: number; x2: number; y2: number }>();
   const distortionDuration = ref<number>();
   const distortionError = ref<Error | string>();
+
+  // Input validation errors
   const validationErrors = ref<DistortionArgumentsValidationErrors>({});
+
   const loadSourceImage = async (file: Blob) => {
     isLoadingSourceImage.value = true;
     sourceImage.value = await loadImageFile(file);

@@ -91,5 +91,5 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="container"><slot /></div>
+  <div ref="container" class="panable-container"><slot /></div>
 </template>
