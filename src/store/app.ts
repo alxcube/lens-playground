@@ -1,8 +1,10 @@
-// Utilities
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import { useDisplay } from 'vuetify';
 
-export const useAppStore = defineStore('app', {
-  state: () => ({
-    //
-  }),
-})
+export const useAppStore = defineStore('app', () => {
+  const { mobile: isMobile } = useDisplay({ mobileBreakpoint: 'sm' });
+
+  return {
+    isMobile
+  };
+});
