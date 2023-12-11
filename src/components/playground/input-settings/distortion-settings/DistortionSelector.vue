@@ -29,6 +29,7 @@ const distortionNames = serviceContainer.resolve('ReversePixelMapperFactoriesPoo
     v-model="valueModel"
     :disabled="props.disabled"
     :error-messages="props.errors"
+    density="compact"
   />
 </template>
 

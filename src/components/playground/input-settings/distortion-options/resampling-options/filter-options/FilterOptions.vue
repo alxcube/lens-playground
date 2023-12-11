@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import FilterPresetEditor from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/FilterPresetEditor';
 import FilterPresetSelector from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/FilterPresetSelector';
+import { useDistortionStore } from '@/store/distortion';
 import {
   type ResampleFilterPreset,
   ResampleFilterPresetsPoolKeyMap,
   serviceContainer
 } from '@alxcube/lens';
 import { useVModel } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 
 const props = withDefaults(
@@ -35,6 +37,8 @@ const filterWindowSupportModel = useVModel(props, 'filterWindowSupport', emit);
 const shouldDisplayFilterPresetEditor = ref<boolean>(false);
 const shouldDisplayExpertSettings = ref<boolean>(false);
 
+const distortionStore = useDistortionStore();
+const { validationErrors } = storeToRefs(distortionStore);
 const clonePreset = (preset: ResampleFilterPreset): ResampleFilterPreset => {
   const clone = { ...preset };
   clone.filterFunctionFactoryArgs = preset.filterFunctionFactoryArgs.slice();
@@ -67,7 +71,12 @@ watch(shouldDisplayExpertSettings, (val: boolean) => {
   <div class="filter-options">
     <FilterPresetSelector v-model="presetName" :disabled="props.disabled" />
 
-    <VCheckbox label="Customize" v-model="shouldDisplayFilterPresetEditor" density="compact" />
+    <VCheckbox
+      label="Customize"
+      v-model="shouldDisplayFilterPresetEditor"
+      density="compact"
+      :error-messages="validationErrors.filter"
+    />
 
     <VExpandTransition>
       <FilterPresetEditor

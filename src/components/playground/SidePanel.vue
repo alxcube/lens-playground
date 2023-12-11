@@ -6,7 +6,7 @@ import { ref, watch } from 'vue';
 const selectedTab = ref(0);
 
 const distortionStore = useDistortionStore();
-const { distortedImage } = storeToRefs(distortionStore);
+const { distortedImage, isProcessingDistortion } = storeToRefs(distortionStore);
 
 watch(distortedImage, (val) => {
   if (val) {
@@ -19,17 +19,13 @@ watch(distortedImage, (val) => {
 </script>
 
 <template>
-  <VTabs v-model="selectedTab">
+  <VTabs v-model="selectedTab" :disabled="isProcessingDistortion">
     <VTab>Input settings</VTab>
     <VTab :disabled="!distortedImage">Output info</VTab>
   </VTabs>
   <VWindow v-model="selectedTab">
     <VWindowItem>
-      <VCard>
-        <VCardText>
-          <slot name="default" />
-        </VCardText>
-      </VCard>
+      <slot name="default" />
     </VWindowItem>
     <VWindowItem>
       <VCard>

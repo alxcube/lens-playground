@@ -13,7 +13,7 @@ import { ReversePixelMapperFactoriesPoolKeyMap } from '../../../../../../lens';
 const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
 
 const distortionStore = useDistortionStore();
-const { distortionName, distortionArguments } = storeToRefs(distortionStore);
+const { distortionName, distortionArguments, validationErrors } = storeToRefs(distortionStore);
 
 const argumentsTitle = computed(() => {
   switch (distortionName.value) {
@@ -84,9 +84,18 @@ watch(
 
 <template>
   <div class="distortion-settings">
-    <DistortionSelector v-model="distortionStore.distortionName" :disabled="props.disabled" />
+    <DistortionSelector
+      v-model="distortionName"
+      :disabled="props.disabled"
+      :errors="validationErrors.distortionName"
+    />
 
-    <h5>{{ argumentsTitle }}</h5>
+    <h5 class="text-subtitle-2" v-if="distortionName">{{ argumentsTitle }}</h5>
+    <VMessages
+      :messages="validationErrors.args"
+      :active="!!validationErrors.args"
+      color="rgb(var(--v-theme-error))"
+    />
 
     <VExpandTransition>
       <ControlPoints
@@ -94,24 +103,28 @@ watch(
         v-model="distortionArguments"
         :disabled="props.disabled"
         :min-control-points="minControlPoints"
+        :error-indexes="validationErrors.invalidArgs"
       />
 
       <AffineMatrix
         v-else-if="distortionName === 'AffineProjection'"
         v-model="distortionArguments"
         :disabled="props.disabled"
+        :error-indexes="validationErrors.invalidArgs"
       />
 
       <PerspectiveMatrix
         v-else-if="distortionName === 'PerspectiveProjection'"
         v-model="distortionArguments"
         :disabled="props.disabled"
+        :error-indexes="validationErrors.invalidArgs"
       />
 
       <ArcArguments
         v-else-if="distortionName === 'Arc'"
         v-model="distortionArguments"
         :disabled="props.disabled"
+        :error-indexes="validationErrors.invalidArgs"
       />
 
       <GenericArguments

@@ -4,7 +4,7 @@ import PanableContainer from '@/components/playground/image-area/PanableContaine
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { useVModel } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { computed, nextTick, ref, shallowRef } from 'vue';
+import { computed, nextTick, ref, shallowRef, watch } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -50,6 +50,16 @@ const classes = computed(() => {
     'image-outline': !!props.imageOutline
   };
 });
+
+watch(
+  () => props.image,
+  (image) => {
+    if (image) {
+      nextTick(fitViewport);
+    }
+  },
+  { immediate: true }
+);
 
 function fitViewport() {
   if (container.value) {
@@ -205,6 +215,6 @@ defineExpose({
 }
 
 :deep(.panable-container) {
-  position: relative;
+  position: absolute;
 }
 </style>

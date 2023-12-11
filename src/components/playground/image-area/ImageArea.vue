@@ -8,14 +8,16 @@ import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { storeToRefs } from 'pinia';
 import { computed, ref, shallowRef, watch } from 'vue';
 
-const props = defineProps<{
-  disabled?: boolean;
-}>();
 const imageViewer = shallowRef<InstanceType<typeof ImageViewer>>();
 const scaleModel = ref(1);
 const distortionStore = useDistortionStore();
-const { sourceImage, distortedImage, distortionViewport, sourceImageViewport } =
-  storeToRefs(distortionStore);
+const {
+  sourceImage,
+  distortedImage,
+  distortionViewport,
+  sourceImageViewport,
+  isProcessingDistortion
+} = storeToRefs(distortionStore);
 const currentTab = ref(0);
 const displayImage = computed(() => {
   return currentTab.value === 0 ? sourceImage.value : distortedImage.value;
@@ -66,7 +68,7 @@ const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null })
 <template>
   <VCard class="image-area d-flex fill-height">
     <VToolbar>
-      <VTabs color="white" v-model="currentTab" :disabled="props.disabled">
+      <VTabs color="white" v-model="currentTab" :disabled="isProcessingDistortion">
         <VTab> Original </VTab>
 
         <VTab :disabled="!distortedImage"> Distorted </VTab>
@@ -78,7 +80,7 @@ const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null })
         v-model:show-axes="showAxes"
         v-model:apply-viewport-offset="applyViewportOffset"
         v-model:image-outline="imageOutline"
-        :disabled="props.disabled"
+        :disabled="isProcessingDistortion"
       />
     </VToolbar>
 
@@ -88,7 +90,7 @@ const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null })
       :image="displayImage"
       class="flex-grow-1 flex-shrink-1"
       v-model:scale="scaleModel"
-      :disabled="props.disabled"
+      :disabled="isProcessingDistortion"
       :show-axes="showAxes"
       :offset="viewportOffset"
       :image-outline="imageOutline"
@@ -100,7 +102,7 @@ const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null })
       <VToolbar flat density="compact">
         <ZoomControl
           :scale="scaleModel"
-          :disabled="disabled"
+          :disabled="isProcessingDistortion"
           @fit="fitViewport"
           @full-size="scaleModel = 1"
           @zoom-in="zoomIn"

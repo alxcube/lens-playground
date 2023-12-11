@@ -44,7 +44,7 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
       @file-selected="onFileSelected"
     />
 
-    <VRow v-if="sourceImage" class="fill-height">
+    <VRow v-if="sourceImage" class="fill-height mt-0">
       <VCol cols="12" md="8" lg="9" xl="10" xxl="11" class="pa-0">
         <ImageArea />
       </VCol>

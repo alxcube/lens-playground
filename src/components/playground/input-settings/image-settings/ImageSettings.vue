@@ -16,20 +16,10 @@ const {
   imageViewportOffsetOption,
   imageBackgroundColorOption
 } = storeToRefs(distortionStore);
-const { loadSourceImage } = distortionStore;
-
-const { open: openFileDialog, onChange: onFilesChange } = useFileDialog({ accept: 'image/*' });
-onFilesChange((files) => {
-  if (files && files.length) {
-    loadSourceImage(files[0]);
-  }
-});
 </script>
 
 <template>
   <div class="image-settings">
-    <VBtn @click="() => openFileDialog()">Load another image</VBtn>
-
     <VirtualPixelMethodSelector
       v-model="imageVirtualPixelMethodOption"
       :disabled="props.disabled"
@@ -40,9 +30,11 @@ onFilesChange((files) => {
       :disabled="props.disabled"
     />
 
-    <ImageVieportOffset v-model="imageViewportOffsetOption" />
+    <h5 class="text-subtitle-2 mb-1">Initial viewport offset</h5>
 
-    <ColorPicker v-model="imageBackgroundColorOption" />
+    <ImageVieportOffset v-model="imageViewportOffsetOption" :disabled="props.disabled" />
+
+    <ColorPicker v-model="imageBackgroundColorOption" :disabled="props.disabled" />
   </div>
 </template>
 
