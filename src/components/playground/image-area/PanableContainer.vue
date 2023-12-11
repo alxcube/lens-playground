@@ -19,6 +19,8 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'update:position', value: { x: number; y: number }): void;
   (e: 'update:scale', value: number): void;
+  (e: 'panstart'): void;
+  (e: 'panend'): void;
 }>();
 
 const container = shallowRef<HTMLElement>();
@@ -74,6 +76,9 @@ onMounted(() => {
       emit('update:position', { x, y });
       emit('update:scale', scale);
     });
+
+    pz.on('panstart', () => emit('panstart'));
+    pz.on('panend', () => emit('panend'));
 
     if (props.disabled) {
       pz.pause();

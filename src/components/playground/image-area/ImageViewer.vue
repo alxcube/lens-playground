@@ -32,6 +32,7 @@ const emit = defineEmits<{
 const container = shallowRef<HTMLDivElement>();
 const positionModel = ref<{ x: number; y: number }>({ x: 0, y: 0 });
 const scaleModel = useVModel(props, 'scale', emit);
+
 const yAxisStyle = computed(() => ({
   top: `${positionModel.value.y}px`
 }));
@@ -42,12 +43,6 @@ const offsetStyle = computed(() => {
   return {
     top: `${props.offset.y}px`,
     left: `${props.offset.x}px`
-  };
-});
-
-const classes = computed(() => {
-  return {
-    'image-outline': !!props.imageOutline
   };
 });
 
@@ -144,6 +139,18 @@ const onContainerPointerMove = (event: PointerEvent) =>
 
 const onContainerPointerLeave = () => emit('pointerout:image');
 
+const isPanning = ref(false);
+const onPanStart = () => (isPanning.value = true);
+const onPanEnd = () => (isPanning.value = false);
+
+const classes = computed(() => {
+  return {
+    'image-outline': !!props.imageOutline,
+    grabbing: isPanning.value,
+    crosshair: hasImagePointRequests.value
+  };
+});
+
 defineExpose({
   fitViewport,
   zoom
@@ -168,6 +175,8 @@ defineExpose({
         v-model:position="positionModel"
         v-model:scale="scaleModel"
         :disabled="props.disabled"
+        @panstart="onPanStart"
+        @panend="onPanEnd"
       >
         <CanvasWrapper :canvas="props.image" :style="offsetStyle" />
       </PanableContainer>
@@ -178,6 +187,16 @@ defineExpose({
 <style scoped lang="scss">
 .image-viewer-container {
   height: 100%;
+  cursor: grab;
+
+  &.grabbing {
+    cursor: grabbing;
+  }
+
+  &.crosshair,
+  &.grabbing.crosshair {
+    cursor: crosshair;
+  }
 
   &.image-outline :deep(canvas) {
     outline: goldenrod 1px solid;
