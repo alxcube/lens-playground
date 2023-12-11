@@ -60,7 +60,7 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
       <VCol cols="12" md="8" lg="9" xl="10" xxl="11" class="pa-0">
         <ImageArea />
       </VCol>
-      <VCol cols="12" md="4" lg="3" xl="2" xxl="1" class="d-none d-md-flex">
+      <VCol cols="12" md="4" lg="3" xl="2" xxl="1" class="d-none d-md-flex py-0 pr-0">
         <div class="relative-wrapper">
           <div class="absolute-wrapper">
             <SidePanel>
