@@ -11,7 +11,7 @@ const { matteColorOption } = storeToRefs(distortionStore);
 
 <template>
   <div class="matte-color-picker">
-    <ColorPicker v-model="matteColorOption" :disabled="props.disabled" />
+    <ColorPicker label="Matte color" v-model="matteColorOption" :disabled="props.disabled" />
   </div>
 </template>
 

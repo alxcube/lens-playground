@@ -34,7 +34,11 @@ const {
 
     <ImageVieportOffset v-model="imageViewportOffsetOption" :disabled="props.disabled" />
 
-    <ColorPicker v-model="imageBackgroundColorOption" :disabled="props.disabled" />
+    <ColorPicker
+      label="Image background color"
+      v-model="imageBackgroundColorOption"
+      :disabled="props.disabled"
+    />
   </div>
 </template>
 
