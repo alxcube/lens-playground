@@ -18,7 +18,7 @@ const playgroundContainer = shallowRef<HTMLDivElement>();
 
 const distortionStore = useDistortionStore();
 const { sourceImage, distortedImage, isLoadingSourceImage } = storeToRefs(distortionStore);
-const { loadSourceImage, processDistortion } = distortionStore;
+const { loadSourceImage } = distortionStore;
 
 const { isOverDropZone } = useDropZone(playgroundContainer, {
   dataTypes: ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
@@ -53,7 +53,6 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
           <div class="absolute-wrapper">
             <SidePanel>
               <template #default>
-                <VBtn @click="processDistortion">Distort</VBtn>
                 <InputSettings />
               </template>
 

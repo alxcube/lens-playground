@@ -18,6 +18,7 @@ const {
   sourceImageViewport,
   isProcessingDistortion
 } = storeToRefs(distortionStore);
+const { processDistortion } = distortionStore;
 const currentTab = ref(0);
 const displayImage = computed(() => {
   return currentTab.value === 0 ? sourceImage.value : distortedImage.value;
@@ -75,6 +76,27 @@ const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null })
       </VTabs>
 
       <VSpacer />
+
+      <VBtn
+        @click="processDistortion"
+        :disabled="isProcessingDistortion"
+        color="primary"
+        variant="tonal"
+        class="hidden-sm-and-down"
+      >
+        <VIcon>mdi-camera-iris</VIcon>
+        Distort
+      </VBtn>
+      <VBtn
+        @click="processDistortion"
+        :disabled="isProcessingDistortion"
+        color="primary"
+        variant="tonal"
+        icon
+        class="hidden-md-and-up"
+      >
+        <VIcon>mdi-camera-iris</VIcon>
+      </VBtn>
 
       <ImageViewerMenu
         v-model:show-axes="showAxes"
