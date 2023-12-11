@@ -2,7 +2,7 @@
 import { useDistortionStore } from '@/store/distortion';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { storeToRefs } from 'pinia';
-import { shallowRef } from 'vue';
+import { onBeforeUnmount, shallowRef } from 'vue';
 
 const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
 
@@ -52,6 +52,10 @@ const pickPoint = (source = false) => {
 
 const pickSourcePoint = () => pickPoint(true);
 const pickDestinationPoint = () => pickPoint(false);
+
+onBeforeUnmount(() => {
+  cancelPickPoint();
+});
 </script>
 
 <template>
