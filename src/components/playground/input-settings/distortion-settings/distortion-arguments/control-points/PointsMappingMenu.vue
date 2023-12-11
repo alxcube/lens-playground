@@ -53,6 +53,19 @@ const pickPoint = (source = false) => {
 const pickSourcePoint = () => pickPoint(true);
 const pickDestinationPoint = () => pickPoint(false);
 
+const pickTopLeft = () =>
+  sourceImageViewport.value &&
+  emit('set-source', { x: sourceImageViewport.value.x1, y: sourceImageViewport.value.y1 });
+const pickTopRight = () =>
+  sourceImageViewport.value &&
+  emit('set-source', { x: sourceImageViewport.value.x2, y: sourceImageViewport.value.y1 });
+const pickBottomRight = () =>
+  sourceImageViewport.value &&
+  emit('set-source', { x: sourceImageViewport.value.x2, y: sourceImageViewport.value.y2 });
+const pickBottomLeft = () =>
+  sourceImageViewport.value &&
+  emit('set-source', { x: sourceImageViewport.value.x1, y: sourceImageViewport.value.y2 });
+
 onBeforeUnmount(() => {
   cancelPickPoint();
 });
@@ -69,13 +82,33 @@ onBeforeUnmount(() => {
     <VIcon>mdi-dots-vertical</VIcon>
     <VMenu activator="parent" :close-on-content-click="true" :disabled="props.disabled">
       <VList>
-        <VListItem @click="pickSourcePoint" prepend-icon="mdi-target-variant">
+        <VListItem prepend-icon="mdi-menu-left">
           Pick Source Point
+
+          <VMenu :offset-x="true" activator="parent" location="start">
+            <VList>
+              <VListItem @click="pickSourcePoint" prepend-icon="mdi-target"> From Image </VListItem>
+              <VListItem prepend-icon="mdi-arrow-top-left" @click="pickTopLeft">
+                Image Top Left
+              </VListItem>
+              <VListItem prepend-icon="mdi-arrow-top-right" @click="pickTopRight">
+                Image Top Right
+              </VListItem>
+              <VListItem prepend-icon="mdi-arrow-bottom-left" @click="pickBottomLeft">
+                Image Bottom Left
+              </VListItem>
+              <VListItem prepend-icon="mdi-arrow-bottom-right" @click="pickBottomRight">
+                Image Bottom Right
+              </VListItem>
+            </VList>
+          </VMenu>
         </VListItem>
         <VListItem @click="pickDestinationPoint" prepend-icon="mdi-target-variant">
           Pick Destination Point
         </VListItem>
-        <VListItem @click="emit('delete-mapping')">Remove Mapping</VListItem>
+        <VListItem prepend-icon="mdi-delete-forever" @click="emit('delete-mapping')"
+          >Remove Mapping</VListItem
+        >
       </VList>
     </VMenu>
   </VBtn>
