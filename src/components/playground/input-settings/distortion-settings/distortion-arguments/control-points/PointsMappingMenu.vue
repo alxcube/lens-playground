@@ -94,11 +94,11 @@ onBeforeUnmount(() => {
               <VListItem prepend-icon="mdi-arrow-top-right" @click="pickTopRight">
                 Image Top Right
               </VListItem>
-              <VListItem prepend-icon="mdi-arrow-bottom-left" @click="pickBottomLeft">
-                Image Bottom Left
-              </VListItem>
               <VListItem prepend-icon="mdi-arrow-bottom-right" @click="pickBottomRight">
                 Image Bottom Right
+              </VListItem>
+              <VListItem prepend-icon="mdi-arrow-bottom-left" @click="pickBottomLeft">
+                Image Bottom Left
               </VListItem>
             </VList>
           </VMenu>
