@@ -78,7 +78,7 @@ watch(
       }
     }
   },
-  { immediate: true }
+  { immediate: true, flush: 'sync' }
 );
 </script>
 

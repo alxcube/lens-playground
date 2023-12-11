@@ -235,13 +235,13 @@ function validateDistortionArguments(
     checkLimit = Math.floor(args.length / 4) + (args.length % 4) ? 4 : 0;
   }
   if (distortion === 'AffineProjection') {
-    if (args.length !== '6') {
+    if (args.length !== 6) {
       messages.push('AffineProjection distortion requires exactly 6 arguments.');
       checkLimit = 6;
     }
   }
   if (distortion === 'Perspective') {
-    if (args < 16) {
+    if (args.length < 16) {
       messages.push('Perspective distortion requires at least 16 arguments.');
     }
     if (args.length % 4) {
