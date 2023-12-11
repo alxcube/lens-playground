@@ -119,3 +119,10 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
   }
 }
 </style>
+
+<style lang="scss">
+// remove scrollbar
+html {
+  overflow-y: auto;
+}
+</style>
