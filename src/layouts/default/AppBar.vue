@@ -1,5 +1,5 @@
 <template>
-  <VAppBar flat density="compact">
+  <VAppBar flat density="comfortable">
     <VAppBarTitle>
       <VIcon icon="mdi-circle-slice-6" />
       LENS <small>playground</small>

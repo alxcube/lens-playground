@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import NextTickTeleport from '@/components/NextTickTeleport';
 import ImageArea from '@/components/playground/image-area/ImageArea';
-import FileSelectionArea from '@/components/playground/FileSelectionArea';
 import InputSettings from '@/components/playground/input-settings/InputSettings';
 import MobileDialog from '@/components/playground/MobileDialog';
 import OuptutInfo from '@/components/playground/OuptutInfo';
@@ -10,40 +9,53 @@ import SidePanel from '@/components/playground/SidePanel';
 import { useAppStore } from '@/store/app';
 import { useDistortionStore } from '@/store/distortion';
 import { usePlaygroundStore } from '@/store/playground';
-import { useDropZone } from '@vueuse/core';
+import { useDropZone, useFileDialog } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { shallowRef } from 'vue';
 
 const playgroundContainer = shallowRef<HTMLDivElement>();
 
+const appStore = useAppStore();
+const { isMobile, isLoading } = storeToRefs(appStore);
+
 const distortionStore = useDistortionStore();
 const { sourceImage, distortedImage, isLoadingSourceImage } = storeToRefs(distortionStore);
 const { loadSourceImage } = distortionStore;
 
+const onFilesSelected = (files: ArrayLike<File> | null) => {
+  if (files && files.length && !isLoading.value) {
+    loadSourceImage(files[0]);
+  }
+};
+
 const { isOverDropZone } = useDropZone(playgroundContainer, {
   dataTypes: ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
-  onDrop: (files) => {
-    if (files && files.length) {
-      loadSourceImage(files[0]);
-    }
-  }
+  onDrop: onFilesSelected
 });
 
-const onFileSelected = (file: File) => loadSourceImage(file);
+const { open: openFileDialog, onChange: onFileDialogChange } = useFileDialog({ accept: 'image/*' });
+onFileDialogChange(onFilesSelected);
 
-const appStore = useAppStore();
-const { isMobile } = storeToRefs(appStore);
 const playgroundStore = usePlaygroundStore();
 const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgroundStore);
 </script>
 
 <template>
   <div ref="playgroundContainer" class="lens-playground fill-height">
-    <FileSelectionArea
+    <div
       v-if="!sourceImage && !isLoadingSourceImage"
-      @file-selected="onFileSelected"
-    />
-
+      class="fill-height"
+      @click="() => openFileDialog()"
+    >
+      <div class="d-flex align-content-center fill-height justify-center align-center">
+        <p class="text-center">
+          <VIcon size="100">mdi-image</VIcon>
+          <br />
+          <span class="hidden-sm-and-down">Drag image here or click to select</span>
+          <span class="hidden-md-and-up">Tap to select image</span>
+        </p>
+      </div>
+    </div>
     <VRow v-if="sourceImage" class="fill-height ma-0">
       <VCol cols="12" md="8" lg="9" xl="10" xxl="11" class="pa-0">
         <ImageArea />
@@ -77,7 +89,7 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
       </MobileDialog>
     </template>
 
-    <div class="drop-zone-overlay" v-if="isOverDropZone" />
+    <div class="drop-zone-overlay" v-if="isOverDropZone && !isLoading" />
   </div>
 </template>
 

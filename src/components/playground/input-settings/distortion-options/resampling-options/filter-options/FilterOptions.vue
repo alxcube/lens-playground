@@ -88,7 +88,6 @@ watch(shouldDisplayExpertSettings, (val: boolean) => {
 
     <VCheckbox
       label="Expert settings"
-      hint="More expert than above)"
       v-model="shouldDisplayExpertSettings"
       :disabled="props.disabled"
       density="compact"
