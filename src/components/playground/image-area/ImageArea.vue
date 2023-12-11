@@ -144,6 +144,8 @@ onFileSelected((files) => {
 
         <VSpacer />
 
+        <slot name="bottom-right" />
+
         <CursorPosition
           v-if="hasImagePointRequests"
           :image-cursor-position="cursorPositionOverImage"

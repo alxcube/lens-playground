@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import NextTickTeleport from '@/components/NextTickTeleport';
 import ImageArea from '@/components/playground/image-area/ImageArea';
 import InputSettings from '@/components/playground/input-settings/InputSettings';
 import MobileDialog from '@/components/playground/MobileDialog';
 import OuptutInfo from '@/components/playground/OuptutInfo';
-import PlaygroundTopMenu from '@/components/playground/PlaygroundTopMenu';
 import SidePanel from '@/components/playground/SidePanel';
 import { useAppStore } from '@/store/app';
 import { useDistortionStore } from '@/store/distortion';
-import { usePlaygroundStore } from '@/store/playground';
 import { useDropZone, useFileDialog } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { shallowRef } from 'vue';
+import { ref, shallowRef } from 'vue';
 
 const playgroundContainer = shallowRef<HTMLDivElement>();
 
@@ -36,8 +33,8 @@ const { isOverDropZone } = useDropZone(playgroundContainer, {
 const { open: openFileDialog, onChange: onFileDialogChange } = useFileDialog({ accept: 'image/*' });
 onFileDialogChange(onFilesSelected);
 
-const playgroundStore = usePlaygroundStore();
-const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgroundStore);
+const isShowInputSettingsDialog = ref(false);
+const isShowOutputInfoDialog = ref(false);
 </script>
 
 <template>
@@ -58,7 +55,20 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
     </div>
     <VRow v-if="sourceImage" class="fill-height ma-0">
       <VCol cols="12" md="8" lg="9" xl="10" xxl="11" class="pa-0">
-        <ImageArea />
+        <ImageArea>
+          <template v-if="isMobile" #bottom-right>
+            <VBtn icon @click="isShowInputSettingsDialog = true" :disabled="isLoading">
+              <VIcon>mdi-cogs</VIcon>
+            </VBtn>
+            <VBtn
+              icon
+              @click="isShowOutputInfoDialog = true"
+              :disabled="isLoading || !distortedImage"
+            >
+              <VIcon>mdi-information-outline</VIcon>
+            </VBtn>
+          </template>
+        </ImageArea>
       </VCol>
       <VCol cols="12" md="4" lg="3" xl="2" xxl="1" class="d-none d-md-flex py-0 pr-0">
         <div class="relative-wrapper">
@@ -76,8 +86,6 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
         </div>
       </VCol>
     </VRow>
-
-    <NextTickTeleport to="#topmenu"><PlaygroundTopMenu /></NextTickTeleport>
 
     <template v-if="sourceImage && isMobile">
       <MobileDialog title="Input Settings" v-model="isShowInputSettingsDialog">
