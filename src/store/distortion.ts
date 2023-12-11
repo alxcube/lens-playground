@@ -1,3 +1,4 @@
+import { useAppStore } from '@/store/app';
 import { loadImageFile } from '@/utils/loadImageFile';
 import {
   type ColorResamplerFactoriesPoolKeyMap,
@@ -57,16 +58,24 @@ export const useDistortionStore = defineStore('distortion', () => {
   // Input validation errors
   const validationErrors = ref<DistortionArgumentsValidationErrors>({});
 
+  const { startLoading, finishLoading } = useAppStore();
+
   const loadSourceImage = async (file: Blob) => {
+    resetDistortionOutput();
     isLoadingSourceImage.value = true;
-    sourceImage.value = await loadImageFile(file);
-    sourceImageViewport.value = {
-      x1: 0,
-      y1: 0,
-      x2: sourceImage.value.width - 1,
-      y2: sourceImage.value.height - 1
-    };
-    isLoadingSourceImage.value = false;
+    startLoading();
+    try {
+      sourceImage.value = await loadImageFile(file);
+      sourceImageViewport.value = {
+        x1: 0,
+        y1: 0,
+        x2: sourceImage.value.width - 1,
+        y2: sourceImage.value.height - 1
+      };
+    } finally {
+      isLoadingSourceImage.value = false;
+      finishLoading();
+    }
   };
 
   const resetDistortionOutput = () => {
@@ -136,6 +145,7 @@ export const useDistortionStore = defineStore('distortion', () => {
     try {
       validateArguments();
       isProcessingDistortion.value = true;
+      startLoading();
       const distortionOptions: DistortionServiceOptions = {
         imageBackgroundColor: imageBackgroundColorOption.value,
         imageInterpolationMethod: imageInterpolationMethodOption.value,
@@ -163,6 +173,7 @@ export const useDistortionStore = defineStore('distortion', () => {
       distortionError.value = e as Error | string;
     } finally {
       isProcessingDistortion.value = false;
+      finishLoading();
     }
   };
 
