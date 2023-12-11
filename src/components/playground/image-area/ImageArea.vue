@@ -3,29 +3,35 @@ import CursorPosition from '@/components/playground/image-area/CursorPosition';
 import ImageViewer from '@/components/playground/image-area/ImageViewer';
 import ImageViewerMenu from '@/components/playground/image-area/ImageViewerMenu';
 import ZoomControl from '@/components/playground/image-area/ZoomControl';
+import { useAppStore } from '@/store/app';
 import { useDistortionStore } from '@/store/distortion';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { useFileDialog } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, ref, shallowRef, watch } from 'vue';
 
-const imageViewer = shallowRef<InstanceType<typeof ImageViewer>>();
-const scaleModel = ref(1);
 const distortionStore = useDistortionStore();
-const {
-  sourceImage,
-  distortedImage,
-  distortionViewport,
-  sourceImageViewport,
-  isProcessingDistortion
-} = storeToRefs(distortionStore);
+const { sourceImage, distortedImage, distortionViewport, sourceImageViewport } =
+  storeToRefs(distortionStore);
 const { processDistortion, loadSourceImage } = distortionStore;
+const { isLoading } = storeToRefs(useAppStore());
+
 const currentTab = ref(0);
 const displayImage = computed(() => {
   return currentTab.value === 0 ? sourceImage.value : distortedImage.value;
 });
+watch(distortedImage, (val) => {
+  if (val) {
+    currentTab.value = 1;
+  } else {
+    currentTab.value = 0;
+  }
+});
+
+const imageViewer = shallowRef<InstanceType<typeof ImageViewer>>();
+const scaleModel = ref(1);
 const showAxes = ref(true);
-const applyViewportOffset = ref(false);
+const applyViewportOffset = ref(true);
 const viewportOffset = computed(() => {
   if (!applyViewportOffset.value) {
     return { x: 0, y: 0 };
@@ -38,14 +44,6 @@ const viewportOffset = computed(() => {
   return { x, y };
 });
 const imageOutline = ref(false);
-
-watch(distortedImage, (val) => {
-  if (val) {
-    currentTab.value = 1;
-  } else {
-    currentTab.value = 0;
-  }
-});
 
 function zoomIn() {
   imageViewer.value?.zoom(true);
@@ -77,7 +75,7 @@ onFileSelected((files) => {
 <template>
   <VCard class="image-area d-flex fill-height">
     <VToolbar>
-      <VTabs color="white" v-model="currentTab" :disabled="isProcessingDistortion">
+      <VTabs color="white" v-model="currentTab" :disabled="isLoading">
         <VTab> Original </VTab>
 
         <VTab :disabled="!distortedImage"> Distorted </VTab>
@@ -87,7 +85,7 @@ onFileSelected((files) => {
 
       <VBtn
         @click="processDistortion"
-        :disabled="isProcessingDistortion"
+        :disabled="isLoading"
         color="primary"
         variant="tonal"
         class="hidden-sm-and-down"
@@ -97,7 +95,7 @@ onFileSelected((files) => {
       </VBtn>
       <VBtn
         @click="processDistortion"
-        :disabled="isProcessingDistortion"
+        :disabled="isLoading"
         color="primary"
         variant="tonal"
         icon
@@ -106,7 +104,7 @@ onFileSelected((files) => {
         <VIcon>mdi-camera-iris</VIcon>
       </VBtn>
 
-      <VBtn @click="openFileDialog" icon :disabled="isProcessingDistortion">
+      <VBtn @click="openFileDialog" icon :disabled="isLoading">
         <VIcon>mdi-image-sync</VIcon>
         <VTooltip activator="parent">Load other image</VTooltip>
       </VBtn>
@@ -115,7 +113,7 @@ onFileSelected((files) => {
         v-model:show-axes="showAxes"
         v-model:apply-viewport-offset="applyViewportOffset"
         v-model:image-outline="imageOutline"
-        :disabled="isProcessingDistortion"
+        :disabled="isLoading"
       />
     </VToolbar>
 
@@ -125,7 +123,7 @@ onFileSelected((files) => {
       :image="displayImage"
       class="flex-grow-1 flex-shrink-1"
       v-model:scale="scaleModel"
-      :disabled="isProcessingDistortion"
+      :disabled="isLoading"
       :show-axes="showAxes"
       :offset="viewportOffset"
       :image-outline="imageOutline"
@@ -137,7 +135,7 @@ onFileSelected((files) => {
       <VToolbar flat density="compact">
         <ZoomControl
           :scale="scaleModel"
-          :disabled="isProcessingDistortion"
+          :disabled="isLoading"
           @fit="fitViewport"
           @full-size="scaleModel = 1"
           @zoom-in="zoomIn"
