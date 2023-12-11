@@ -108,6 +108,9 @@ const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null })
           @zoom-in="zoomIn"
           @zoom-out="zoomOut"
         />
+
+        <VSpacer />
+
         <CursorPosition
           v-if="hasImagePointRequests"
           :image-cursor-position="cursorPositionOverImage"

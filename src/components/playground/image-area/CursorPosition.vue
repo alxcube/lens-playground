@@ -38,10 +38,35 @@ const vpYString = computed(() => formatPosition(cursorPositionOverViewport.value
 </script>
 
 <template>
-  <VSheet>
-    Image: x: {{ imageXString }}, y: {{ imageYString }}; Viewport: x: {{ vpXString }}, y:
-    {{ vpYString }}
-  </VSheet>
+  <div class="cursor-position hidden-sm-and-down">
+    <VRow no-gutters class="justify-end align-center fill-height">
+      <VCol cols="6">
+        <VSheet class="pa-1">
+          <div class="text-caption">Image:</div>
+          <VRow no-gutters class="text-body-2">
+            <VCol cols="6"> x: {{ imageXString }} </VCol>
+            <VCol cols="6"> y: {{ imageYString }} </VCol>
+          </VRow>
+        </VSheet>
+      </VCol>
+      <VCol cols="6">
+        <VSheet class="pa-1">
+          <div class="text-caption">Viewport:</div>
+          <VRow no-gutters class="text-body-2">
+            <VCol cols="6"> x: {{ vpXString }} </VCol>
+            <VCol cols="6"> y: {{ vpYString }} </VCol>
+          </VRow>
+        </VSheet>
+      </VCol>
+    </VRow>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+:deep(.v-sheet) {
+  max-width: 200px;
+}
+.cursor-position {
+  width: 420px;
+}
+</style>
