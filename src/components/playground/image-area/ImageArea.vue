@@ -5,6 +5,7 @@ import ImageViewerMenu from '@/components/playground/image-area/ImageViewerMenu'
 import ZoomControl from '@/components/playground/image-area/ZoomControl';
 import { useDistortionStore } from '@/store/distortion';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';
+import { useFileDialog } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 import { computed, ref, shallowRef, watch } from 'vue';
 
@@ -18,7 +19,7 @@ const {
   sourceImageViewport,
   isProcessingDistortion
 } = storeToRefs(distortionStore);
-const { processDistortion } = distortionStore;
+const { processDistortion, loadSourceImage } = distortionStore;
 const currentTab = ref(0);
 const displayImage = computed(() => {
   return currentTab.value === 0 ? sourceImage.value : distortedImage.value;
@@ -64,6 +65,13 @@ const { hasRequests: hasImagePointRequests } = storeToRefs(imagePointTransportSt
 const setCursorPositionOverImage = (point: { x: number | null; y: number | null }) =>
   (cursorPositionOverImage.value = point);
 const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null });
+
+const { open: openFileDialog, onChange: onFileSelected } = useFileDialog({ accept: 'image/*' });
+onFileSelected((files) => {
+  if (files && files.length) {
+    loadSourceImage(files[0]);
+  }
+});
 </script>
 
 <template>
@@ -96,6 +104,11 @@ const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null })
         class="hidden-md-and-up"
       >
         <VIcon>mdi-camera-iris</VIcon>
+      </VBtn>
+
+      <VBtn @click="openFileDialog" icon :disabled="isProcessingDistortion">
+        <VIcon>mdi-image-sync</VIcon>
+        <VTooltip activator="parent">Load other image</VTooltip>
       </VBtn>
 
       <ImageViewerMenu

@@ -24,6 +24,7 @@ const isShowMenu = ref(false);
 <template>
   <VBtn icon :disabled="disabled">
     <VIcon>mdi-tune</VIcon>
+    <VTooltip activator="parent">Viewer settings</VTooltip>
     <VMenu :close-on-content-click="false" v-model="isShowMenu" activator="parent">
       <VCard>
         <VCardText>
