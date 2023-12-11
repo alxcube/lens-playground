@@ -48,7 +48,7 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
       @click="() => openFileDialog()"
     >
       <div class="d-flex align-content-center fill-height justify-center align-center">
-        <p class="text-center">
+        <p class="text-center" v-if="!isOverDropZone">
           <VIcon size="100">mdi-image</VIcon>
           <br />
           <span class="hidden-sm-and-down">Drag image here or click to select</span>
@@ -89,7 +89,16 @@ const { isShowInputSettingsDialog, isShowOutputInfoDialog } = storeToRefs(playgr
       </MobileDialog>
     </template>
 
-    <div class="drop-zone-overlay" v-if="isOverDropZone && !isLoading" />
+    <div
+      v-if="isOverDropZone && !isLoading"
+      class="drop-zone-overlay d-flex align-center justify-center"
+    >
+      <p class="text-center">
+        <VIcon size="100">mdi-chevron-triple-down</VIcon>
+        <br />
+        Drop image to load
+      </p>
+    </div>
   </div>
 </template>
 
