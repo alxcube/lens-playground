@@ -1,6 +1,21 @@
 <template>
   <VApp theme="dark">
-    <DefaultBar />
+    <VNavigationDrawer v-model="isDrawerOpened" temporary>
+      <VList>
+        <VListItem
+          href="https://alxcube.github.io/lens"
+          prepend-icon="mdi-file-document-multiple"
+          target="_blank"
+        >
+          Lens Docs
+        </VListItem>
+        <VListItem href="https://github.com/alxcube/lens" prepend-icon="mdi-github" target="_blank">
+          Lens on Github
+        </VListItem>
+      </VList>
+    </VNavigationDrawer>
+
+    <DefaultBar v-model:is-drawer-opened="isDrawerOpened" />
 
     <DefaultView />
 
@@ -20,7 +35,10 @@
 import GlobalMessage from '@/components/GlobalMessage';
 import { useAppStore } from '@/store/app';
 import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 import DefaultBar from './AppBar.vue';
 import DefaultView from './View.vue';
 const { isLoading } = storeToRefs(useAppStore());
+
+const isDrawerOpened = ref(false);
 </script>
