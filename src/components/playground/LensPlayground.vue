@@ -37,7 +37,9 @@ onFileDialogChange(onFilesSelected);
 const isShowInputSettingsDialog = ref(false);
 const isShowOutputInfoDialog = ref(false);
 
-const { hasRequests: isSelectingImagePoint } = storeToRefs(useImagePointsTransportStore());
+const imagePointsTransportStore = useImagePointsTransportStore();
+const { hasRequests: isSelectingImagePoint } = storeToRefs(imagePointsTransportStore);
+const { cancelAll: cancelImagePointSelection } = imagePointsTransportStore;
 const shouldRestoreInputSettingsDialog = ref(false);
 watch(isSelectingImagePoint, (value) => {
   if (value && isShowInputSettingsDialog.value) {
@@ -110,6 +112,13 @@ watch(isSelectingImagePoint, (value) => {
       <MobileDialog title="Output Info" v-if="distortedImage" v-model="isShowOutputInfoDialog">
         <OuptutInfo />
       </MobileDialog>
+
+      <VSnackbar v-model="isSelectingImagePoint" :timeout="-1" location="top" color="teal-darken-1">
+        Pick image point
+        <template #actions>
+          <VBtn @click="cancelImagePointSelection">Cancel</VBtn>
+        </template>
+      </VSnackbar>
     </template>
 
     <div

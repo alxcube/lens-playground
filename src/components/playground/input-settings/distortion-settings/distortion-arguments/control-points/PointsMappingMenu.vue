@@ -2,7 +2,7 @@
 import { useDistortionStore } from '@/store/distortion';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { storeToRefs } from 'pinia';
-import { onBeforeUnmount, shallowRef } from 'vue';
+import { onBeforeUnmount, shallowRef, watch } from 'vue';
 
 const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
 
@@ -31,6 +31,12 @@ const imagePointTransportStore = useImagePointsTransportStore();
 const { hasRequests } = storeToRefs(imagePointTransportStore);
 const { request: requestPoint } = imagePointTransportStore;
 const cancelPointRequest = shallowRef<{ (): void }>();
+
+watch(hasRequests, (val) => {
+  if (!val && cancelPointRequest.value) {
+    cancelPointRequest.value = undefined;
+  }
+});
 
 const cancelPickPoint = () => {
   if (cancelPointRequest.value) {

@@ -34,11 +34,21 @@ export const useImagePointsTransportStore = defineStore('imagePointsTransport', 
     return () => cancel(cb);
   };
 
+  const cancelAll = () => {
+    if (requests.value.length) {
+      requests.value = [];
+    }
+    if (hasRequests.value) {
+      hasRequests.value = false;
+    }
+  };
+
   return {
     requests,
     hasRequests,
     feed,
     request,
-    cancel
+    cancel,
+    cancelAll
   };
 });
