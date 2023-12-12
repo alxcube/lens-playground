@@ -1,5 +1,5 @@
 <template>
-  <VApp theme="dark">
+  <VApp :theme="theme">
     <VNavigationDrawer v-model="isDrawerOpened" temporary>
       <VList>
         <VListItem
@@ -38,7 +38,7 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import DefaultBar from './AppBar.vue';
 import DefaultView from './View.vue';
-const { isLoading } = storeToRefs(useAppStore());
+const { isLoading, theme } = storeToRefs(useAppStore());
 
 const isDrawerOpened = ref(false);
 </script>

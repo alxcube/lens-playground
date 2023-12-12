@@ -1,3 +1,4 @@
+import { useDark } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useDisplay } from 'vuetify';
@@ -10,11 +11,16 @@ export const useAppStore = defineStore('app', () => {
   const startLoading = () => loadingsCounter.value++;
   const finishLoading = () => loadingsCounter.value > 0 && loadingsCounter.value--;
 
+  const isDarkTheme = useDark();
+  const theme = computed<'dark' | 'light'>(() => (isDarkTheme.value ? 'dark' : 'light'));
+
   return {
     isMobile,
     loadingsCounter,
     isLoading,
     startLoading,
-    finishLoading
+    finishLoading,
+    isDarkTheme,
+    theme
   };
 });
