@@ -78,7 +78,7 @@ watch(isSelectingImagePoint, (value) => {
             <VBtn
               icon
               @click="isShowOutputInfoDialog = true"
-              :disabled="isLoading || !distortedImage"
+              :disabled="isLoading || !distortedImage || isSelectingImagePoint"
             >
               <VIcon>mdi-information-outline</VIcon>
             </VBtn>

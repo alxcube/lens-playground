@@ -60,6 +60,11 @@ function fitViewport() {
 const cursorPositionOverImage = ref<{ x: number | null; y: number | null }>({ x: null, y: null });
 const imagePointTransportStore = useImagePointsTransportStore();
 const { hasRequests: hasImagePointRequests } = storeToRefs(imagePointTransportStore);
+watch(hasImagePointRequests, (value) => {
+  if (value && currentTab.value !== 0) {
+    currentTab.value = 0;
+  }
+});
 const setCursorPositionOverImage = (point: { x: number | null; y: number | null }) =>
   (cursorPositionOverImage.value = point);
 const noCursorOverImage = () => setCursorPositionOverImage({ x: null, y: null });
@@ -75,7 +80,7 @@ onFileSelected((files) => {
 <template>
   <VCard class="image-area d-flex fill-height">
     <VToolbar>
-      <VTabs color="white" v-model="currentTab" :disabled="isLoading">
+      <VTabs color="white" v-model="currentTab" :disabled="isLoading || hasImagePointRequests">
         <VTab> Original </VTab>
 
         <VTab :disabled="!distortedImage"> Distorted </VTab>
@@ -85,7 +90,7 @@ onFileSelected((files) => {
 
       <VBtn
         @click="processDistortion"
-        :disabled="isLoading"
+        :disabled="isLoading || hasImagePointRequests"
         color="primary"
         variant="tonal"
         class="hidden-sm-and-down"
@@ -95,7 +100,7 @@ onFileSelected((files) => {
       </VBtn>
       <VBtn
         @click="processDistortion"
-        :disabled="isLoading"
+        :disabled="isLoading || hasImagePointRequests"
         color="primary"
         variant="tonal"
         icon
@@ -104,7 +109,7 @@ onFileSelected((files) => {
         <VIcon>mdi-camera-iris</VIcon>
       </VBtn>
 
-      <VBtn @click="openFileDialog" icon :disabled="isLoading">
+      <VBtn @click="openFileDialog" icon :disabled="isLoading || hasImagePointRequests">
         <VIcon>mdi-image-sync</VIcon>
         <VTooltip activator="parent">Load other image</VTooltip>
       </VBtn>

@@ -7,9 +7,11 @@ import ViewportSettings from '@/components/playground/input-settings/distortion-
 import InputOptionsGroup from '@/components/playground/input-settings/OptionsGroup';
 import MatteColorPicker from '@/components/playground/input-settings/MatteColorPicker';
 import { useAppStore } from '@/store/app';
+import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { storeToRefs } from 'pinia';
 
 const { isLoading } = storeToRefs(useAppStore());
+const { hasRequests: hasImagePointRequests } = storeToRefs(useImagePointsTransportStore());
 </script>
 
 <template>
@@ -18,18 +20,18 @@ const { isLoading } = storeToRefs(useAppStore());
       <DistortionSettings :disabled="isLoading" />
     </InputOptionsGroup>
     <InputOptionsGroup title="Image Options">
-      <ImageSettings :disabled="isLoading" />
+      <ImageSettings :disabled="isLoading || hasImagePointRequests" />
     </InputOptionsGroup>
     <InputOptionsGroup title="Resampling Options">
-      <ResamplingOptions :disabled="isLoading" />
+      <ResamplingOptions :disabled="isLoading || hasImagePointRequests" />
       <h5 class="text-subtitle-2 mb-1">Supersampling</h5>
-      <SupersamplingOptions :disabled="isLoading" />
+      <SupersamplingOptions :disabled="isLoading || hasImagePointRequests" />
     </InputOptionsGroup>
     <InputOptionsGroup title="Output Image Viewport">
-      <ViewportSettings :disabled="isLoading" />
+      <ViewportSettings :disabled="isLoading || hasImagePointRequests" />
     </InputOptionsGroup>
     <InputOptionsGroup title="Other">
-      <MatteColorPicker :disabled="isLoading" />
+      <MatteColorPicker :disabled="isLoading || hasImagePointRequests" />
     </InputOptionsGroup>
   </div>
 </template>

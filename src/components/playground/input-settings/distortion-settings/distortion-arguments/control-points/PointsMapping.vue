@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import CoordsPair from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/CoordsPair';
 import PointsMappingMenu from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/PointsMappingMenu';
+import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { useVModel } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
 
 const props = withDefaults(
   defineProps<{
@@ -57,6 +59,8 @@ const setDestinationPoint = ({ x, y }: { x: number; y: number }) => {
   xModel.value = x;
   yModel.value = y;
 };
+
+const { hasRequests } = storeToRefs(useImagePointsTransportStore());
 </script>
 
 <template>
@@ -70,7 +74,7 @@ const setDestinationPoint = ({ x, y }: { x: number; y: number }) => {
           :y-label="getLabel('v')"
           :x-error="getIsError('u')"
           :y-error="getIsError('v')"
-          :disabled="props.disabled"
+          :disabled="props.disabled || hasRequests"
         />
       </VCol>
       <VCol cols="6">
@@ -81,12 +85,12 @@ const setDestinationPoint = ({ x, y }: { x: number; y: number }) => {
           :y-label="getLabel('y')"
           :x-error="getIsError('x')"
           :y-error="getIsError('y')"
-          :disabled="props.disabled"
+          :disabled="props.disabled || hasRequests"
         />
       </VCol>
     </VRow>
     <PointsMappingMenu
-      :disabled="props.disabled"
+      :disabled="props.disabled || hasRequests"
       @set-source="setSourcePoint"
       @set-destination="setDestinationPoint"
       @delete-mapping="emit('delete-mapping', props.index)"
