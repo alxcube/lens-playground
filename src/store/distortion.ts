@@ -1,4 +1,5 @@
 import { useAppStore } from '@/store/app';
+import { useMessagesStore } from '@/store/messages';
 import { loadImageFile } from '@/utils/loadImageFile';
 import {
   type ColorResamplerFactoriesPoolKeyMap,
@@ -59,6 +60,7 @@ export const useDistortionStore = defineStore('distortion', () => {
   const validationErrors = ref<DistortionArgumentsValidationErrors>({});
 
   const { startLoading, finishLoading } = useAppStore();
+  const { addMessage } = useMessagesStore();
 
   const loadSourceImage = async (file: Blob) => {
     resetDistortionOutput();
@@ -72,6 +74,8 @@ export const useDistortionStore = defineStore('distortion', () => {
         x2: sourceImage.value.width - 1,
         y2: sourceImage.value.height - 1
       };
+    } catch (e) {
+      addMessage(e as string | Error, 'error');
     } finally {
       isLoadingSourceImage.value = false;
       finishLoading();
@@ -169,8 +173,10 @@ export const useDistortionStore = defineStore('distortion', () => {
       const { x1, y1, x2, y2 } = result.image.getViewport();
       distortionViewport.value = { x1, y1, x2, y2 };
       distortionDuration.value = result.duration;
+      addMessage('Distortion complete', 'success', { timeout: 2000 });
     } catch (e) {
       distortionError.value = e as Error | string;
+      addMessage(e as Error | string, 'error');
     } finally {
       isProcessingDistortion.value = false;
       finishLoading();
