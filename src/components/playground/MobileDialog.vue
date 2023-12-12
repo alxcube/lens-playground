@@ -17,7 +17,7 @@ const isShow = useVModel(props, 'modelValue', emit);
 </script>
 
 <template>
-  <VDialog fullscreen v-model="isShow" transition="dialog-bottom-transition">
+  <VDialog fullscreen v-model="isShow" transition="dialog-bottom-transition" eager>
     <VCard>
       <VToolbar>
         <VBtn icon @click.stop="isShow = false">

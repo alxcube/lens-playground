@@ -6,9 +6,10 @@ import OuptutInfo from '@/components/playground/OuptutInfo';
 import SidePanel from '@/components/playground/SidePanel';
 import { useAppStore } from '@/store/app';
 import { useDistortionStore } from '@/store/distortion';
+import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { useDropZone, useFileDialog } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { ref, shallowRef } from 'vue';
+import { ref, shallowRef, watch } from 'vue';
 
 const playgroundContainer = shallowRef<HTMLDivElement>();
 
@@ -35,6 +36,20 @@ onFileDialogChange(onFilesSelected);
 
 const isShowInputSettingsDialog = ref(false);
 const isShowOutputInfoDialog = ref(false);
+
+const { hasRequests: isSelectingImagePoint } = storeToRefs(useImagePointsTransportStore());
+const shouldRestoreInputSettingsDialog = ref(false);
+watch(isSelectingImagePoint, (value) => {
+  if (value && isShowInputSettingsDialog.value) {
+    shouldRestoreInputSettingsDialog.value = true;
+    isShowInputSettingsDialog.value = false;
+  } else if (!value && shouldRestoreInputSettingsDialog.value) {
+    shouldRestoreInputSettingsDialog.value = false;
+    if (!isShowInputSettingsDialog.value) {
+      isShowInputSettingsDialog.value = true;
+    }
+  }
+});
 </script>
 
 <template>
