@@ -1,10 +1,10 @@
 <template>
   <VAppBar flat density="comfortable">
     <VAppBarNavIcon @click="drawerModel = !drawerModel" />
-    <VAppBarTitle>
-      <VIcon icon="mdi-circle-slice-6" />
-      LENS <small>playground</small>
-    </VAppBarTitle>
+    <RouterLink :to="{ name: 'Home' }">
+      <VImg src="@/assets/lens-logo-96x96.png" width="48" height="48" />
+    </RouterLink>
+    <VAppBarTitle> LENS <small>playground</small> </VAppBarTitle>
 
     <VSpacer />
 
