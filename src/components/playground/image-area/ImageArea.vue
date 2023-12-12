@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import CursorPosition from '@/components/playground/image-area/CursorPosition';
-import ImageViewer from '@/components/playground/image-area/ImageViewer';
-import ImageViewerMenu from '@/components/playground/image-area/ImageViewerMenu';
-import ZoomControl from '@/components/playground/image-area/ZoomControl';
+import CursorPosition from '@/components/playground/image-area/CursorPosition.vue';
+import ImageViewer from '@/components/playground/image-area/ImageViewer.vue';
+import ImageViewerMenu from '@/components/playground/image-area/ImageViewerMenu.vue';
+import ZoomControl from '@/components/playground/image-area/ZoomControl.vue';
 import { useAppStore } from '@/store/app';
 import { useDistortionStore } from '@/store/distortion';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';

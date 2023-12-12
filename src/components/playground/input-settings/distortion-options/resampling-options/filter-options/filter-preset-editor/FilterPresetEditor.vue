@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import WeightingFunctionConfigurer from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/weighting-function-configurer/WeightingFunctionConfigurer';
+import WeightingFunctionConfigurer from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/weighting-function-configurer/WeightingFunctionConfigurer.vue';
 import type { ResampleFilterPreset } from '@alxcube/lens';
 import { useVModel } from '@vueuse/core';
 

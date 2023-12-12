@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PointsMapping from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/PointsMapping';
+import PointsMapping from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/PointsMapping.vue';
 import { useVModel } from '@vueuse/core';
 import { computed } from 'vue';
 

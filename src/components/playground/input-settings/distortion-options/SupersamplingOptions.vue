@@ -12,10 +12,6 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value?: number): void;
-}>();
-
 const distortionStore = useDistortionStore();
 const { outputScalingOption } = storeToRefs(distortionStore);
 

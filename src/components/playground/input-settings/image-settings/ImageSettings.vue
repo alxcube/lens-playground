@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import ColorPicker from '@/components/playground/ColorPicker';
-import ImageVieportOffset from '@/components/playground/input-settings/image-settings/ImageVieportOffset';
-import InterpolationMethodSelector from '@/components/playground/input-settings/image-settings/InterpolationMethodSelector';
-import VirtualPixelMethodSelector from '@/components/playground/input-settings/image-settings/VirtualPixelMethodSelector';
+import ColorPicker from '@/components/playground/ColorPicker.vue';
+import ImageViewportOffset from '@/components/playground/input-settings/image-settings/ImageViewportOffset.vue';
+import InterpolationMethodSelector from '@/components/playground/input-settings/image-settings/InterpolationMethodSelector.vue';
+import VirtualPixelMethodSelector from '@/components/playground/input-settings/image-settings/VirtualPixelMethodSelector.vue';
 import { useDistortionStore } from '@/store/distortion';
-import { useFileDialog } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
 
 const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
@@ -32,7 +31,7 @@ const {
 
     <h5 class="text-subtitle-2 mb-1">Initial viewport offset</h5>
 
-    <ImageVieportOffset v-model="imageViewportOffsetOption" :disabled="props.disabled" />
+    <ImageViewportOffset v-model="imageViewportOffsetOption" :disabled="props.disabled" />
 
     <ColorPicker
       label="Image background color"

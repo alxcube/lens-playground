@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ImageArea from '@/components/playground/image-area/ImageArea';
-import InputSettings from '@/components/playground/input-settings/InputSettings';
-import MobileDialog from '@/components/playground/MobileDialog';
-import OuptutInfo from '@/components/playground/OuptutInfo';
-import SidePanel from '@/components/playground/SidePanel';
+import ImageArea from '@/components/playground/image-area/ImageArea.vue';
+import InputSettings from '@/components/playground/input-settings/InputSettings.vue';
+import MobileDialog from '@/components/playground/MobileDialog.vue';
+import OuptutInfo from '@/components/playground/OuptutInfo.vue';
+import SidePanel from '@/components/playground/SidePanel.vue';
 import { useAppStore } from '@/store/app';
 import { useDistortionStore } from '@/store/distortion';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';

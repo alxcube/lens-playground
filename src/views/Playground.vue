@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import LensPlayground from '@/components/playground/LensPlayground';
+import LensPlayground from '@/components/playground/LensPlayground.vue';
 </script>

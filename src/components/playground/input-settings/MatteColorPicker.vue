@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ColorPicker from '@/components/playground/ColorPicker';
+import ColorPicker from '@/components/playground/ColorPicker.vue';
 import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 

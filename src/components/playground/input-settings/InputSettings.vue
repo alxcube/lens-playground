@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import ResamplingOptions from '@/components/playground/input-settings/distortion-options/resampling-options/ResamplingOptions';
-import SupersamplingOptions from '@/components/playground/input-settings/distortion-options/SupersamplingOptions';
-import DistortionSettings from '@/components/playground/input-settings/distortion-settings/DistortionSettings';
-import ImageSettings from '@/components/playground/input-settings/image-settings/ImageSettings';
-import ViewportSettings from '@/components/playground/input-settings/distortion-options/viewport-settings/ViewportSettings';
-import InputOptionsGroup from '@/components/playground/input-settings/OptionsGroup';
-import MatteColorPicker from '@/components/playground/input-settings/MatteColorPicker';
+import ResamplingOptions from '@/components/playground/input-settings/distortion-options/resampling-options/ResamplingOptions.vue';
+import SupersamplingOptions from '@/components/playground/input-settings/distortion-options/SupersamplingOptions.vue';
+import DistortionSettings from '@/components/playground/input-settings/distortion-settings/DistortionSettings.vue';
+import ImageSettings from '@/components/playground/input-settings/image-settings/ImageSettings.vue';
+import ViewportSettings from '@/components/playground/input-settings/distortion-options/viewport-settings/ViewportSettings.vue';
+import InputOptionsGroup from '@/components/playground/input-settings/OptionsGroup.vue';
+import MatteColorPicker from '@/components/playground/input-settings/MatteColorPicker.vue';
 import { useAppStore } from '@/store/app';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { storeToRefs } from 'pinia';

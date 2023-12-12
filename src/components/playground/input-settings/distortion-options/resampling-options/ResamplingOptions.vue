@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FilterOptions from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/FilterOptions';
+import FilterOptions from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/FilterOptions.vue';
 import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
 

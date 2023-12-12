@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import AffineMatrix from '@/components/playground/input-settings/distortion-settings/distortion-arguments/AffineMatrix';
-import ArcArguments from '@/components/playground/input-settings/distortion-settings/distortion-arguments/ArcArguments';
-import ControlPoints from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/ControlPoints';
-import GenericArguments from '@/components/playground/input-settings/distortion-settings/distortion-arguments/GenericArguments';
-import PerspectiveMatrix from '@/components/playground/input-settings/distortion-settings/distortion-arguments/PerspectiveMatrix';
-import DistortionSelector from '@/components/playground/input-settings/distortion-settings/DistortionSelector';
+import AffineMatrixInput from '@/components/playground/input-settings/distortion-settings/distortion-arguments/AffineMatrixInput.vue';
+import ArcArgumentsInput from '@/components/playground/input-settings/distortion-settings/distortion-arguments/ArcArgumentsInput.vue';
+import ControlPoints from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/ControlPoints.vue';
+import GenericArguments from '@/components/playground/input-settings/distortion-settings/distortion-arguments/GenericArguments.vue';
+import PerspectiveMatrixInput from '@/components/playground/input-settings/distortion-settings/distortion-arguments/PerspectiveMatrixInput.vue';
+import DistortionSelector from '@/components/playground/input-settings/distortion-settings/DistortionSelector.vue';
 import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
-import { computed, watch } from 'vue';
-import { ReversePixelMapperFactoriesPoolKeyMap } from '../../../../../../lens';
+import { computed, ComputedRef, watch } from 'vue';
+import type {
+  ReversePixelMapperFactoriesPoolKeyMap,
+  AffineMatrix,
+  PerspectiveMatrix,
+  ArcDistortionArgs
+} from '@alxcube/lens';
 
 const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
 
@@ -80,6 +85,12 @@ watch(
   },
   { immediate: true, flush: 'sync' }
 );
+
+const affineMatrix = computed(() => distortionArguments.value) as ComputedRef<AffineMatrix>;
+const perspectiveMatrix = computed(
+  () => distortionArguments.value
+) as ComputedRef<PerspectiveMatrix>;
+const arcArguments = computed(() => distortionArguments.value) as ComputedRef<ArcDistortionArgs>;
 </script>
 
 <template>
@@ -106,23 +117,23 @@ watch(
         :error-indexes="validationErrors.invalidArgs"
       />
 
-      <AffineMatrix
+      <AffineMatrixInput
         v-else-if="distortionName === 'AffineProjection'"
-        v-model="distortionArguments"
+        v-model="affineMatrix"
         :disabled="props.disabled"
         :error-indexes="validationErrors.invalidArgs"
       />
 
-      <PerspectiveMatrix
+      <PerspectiveMatrixInput
         v-else-if="distortionName === 'PerspectiveProjection'"
-        v-model="distortionArguments"
+        v-model="perspectiveMatrix"
         :disabled="props.disabled"
         :error-indexes="validationErrors.invalidArgs"
       />
 
-      <ArcArguments
+      <ArcArgumentsInput
         v-else-if="distortionName === 'Arc'"
-        v-model="distortionArguments"
+        v-model="arcArguments"
         :disabled="props.disabled"
         :error-indexes="validationErrors.invalidArgs"
       />

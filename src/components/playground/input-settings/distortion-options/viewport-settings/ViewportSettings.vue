@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ViewportLiteral from '@/components/playground/input-settings/distortion-options/viewport-settings/ViewportLiteral';
+import ViewportLiteral from '@/components/playground/input-settings/distortion-options/viewport-settings/ViewportLiteral.vue';
 import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, Ref, ref, watch } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -11,7 +11,7 @@ const props = withDefaults(
   { disabled: false }
 );
 
-type ViewportLiteral = { x1: number; y1: number; x2: number; y2: number };
+type ViewportObjectLiteral = { x1: number; y1: number; x2: number; y2: number };
 
 type ViewportSwitchValue = 'source' | 'best-fit' | 'custom';
 
@@ -20,22 +20,10 @@ interface ViewportRadioOption {
   value: ViewportSwitchValue;
 }
 
-const getRadioValueFromViewportOption = (
-  option?: 'bestFit' | ViewportLiteral
-): ViewportSwitchValue => {
-  if (!option) {
-    return 'source';
-  }
-  if (option === 'bestFit') {
-    return 'best-fit';
-  }
-  return 'custom';
-};
-
 const distortionStore = useDistortionStore();
 const { viewportOption, sourceImageViewport } = storeToRefs(distortionStore);
-const customViewport = ref(ViewportLiteral);
-const isEqualViewport = (vp1: ViewportLiteral, vp2: ViewportLiteral): boolean => {
+const customViewport = ref<ViewportObjectLiteral>() as Ref<ViewportObjectLiteral>;
+const isEqualViewport = (vp1: ViewportObjectLiteral, vp2: ViewportObjectLiteral): boolean => {
   return vp1.x1 === vp2.x1 && vp1.y1 === vp2.y1 && vp1.x2 === vp2.x2 && vp1.y2 === vp2.y2;
 };
 

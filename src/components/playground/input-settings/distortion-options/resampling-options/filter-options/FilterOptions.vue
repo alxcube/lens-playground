@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import FilterPresetEditor from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/FilterPresetEditor';
-import FilterPresetSelector from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/FilterPresetSelector';
+import FilterPresetEditor from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/FilterPresetEditor.vue';
+import FilterPresetSelector from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/FilterPresetSelector.vue';
 import { useDistortionStore } from '@/store/distortion';
 import {
   type ResampleFilterPreset,
@@ -9,7 +9,7 @@ import {
 } from '@alxcube/lens';
 import { useVModel } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { ref, watch, WritableComputedRef } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -31,7 +31,9 @@ const emit = defineEmits<{
 
 const presetsPool = serviceContainer.resolve('ResampleFilterPresetsPool');
 const presetName = ref<keyof ResampleFilterPresetsPoolKeyMap | string>('Robidoux');
-const valueModel = useVModel(props, 'modelValue', emit, { passive: true });
+const valueModel = useVModel(props, 'modelValue', emit, {
+  passive: true
+}) as WritableComputedRef<ResampleFilterPreset>;
 const filterBlurModel = useVModel(props, 'filterBlur', emit);
 const filterWindowSupportModel = useVModel(props, 'filterWindowSupport', emit);
 const shouldDisplayFilterPresetEditor = ref<boolean>(false);

@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  serviceContainer,
-  type WeightingFunctionFactoriesPoolKeyMap
-} from '../../../../../../../../../../lens';
+import { serviceContainer, type WeightingFunctionFactoriesPoolKeyMap } from '@alxcube/lens';
 import { useVModel } from '@vueuse/core';
 
 const props = withDefaults(

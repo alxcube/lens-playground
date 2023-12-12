@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CubicBcArguments from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/weighting-function-configurer/CubicBcArguments';
-import WeightingFunctionSelector from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/weighting-function-configurer/WeightingFunctionSelector';
+import CubicBcArguments from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/weighting-function-configurer/CubicBcArguments.vue';
+import WeightingFunctionSelector from '@/components/playground/input-settings/distortion-options/resampling-options/filter-options/filter-preset-editor/weighting-function-configurer/WeightingFunctionSelector.vue';
 import type { WeightingFunctionFactoriesPoolKeyMap } from '@alxcube/lens';
 import { useVModel } from '@vueuse/core';
 import { watch } from 'vue';

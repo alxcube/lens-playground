@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CoordsPair from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/CoordsPair';
-import PointsMappingMenu from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/PointsMappingMenu';
+import CoordsPair from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/CoordsPair.vue';
+import PointsMappingMenu from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/PointsMappingMenu.vue';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { useVModel } from '@vueuse/core';
 import { storeToRefs } from 'pinia';

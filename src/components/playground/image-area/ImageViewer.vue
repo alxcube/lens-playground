@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CanvasWrapper from '@/components/playground/image-area/CanvasWrapper';
-import PanableContainer from '@/components/playground/image-area/PanableContainer';
+import CanvasWrapper from '@/components/playground/image-area/CanvasWrapper.vue';
+import PanableContainer from '@/components/playground/image-area/PanableContainer.vue';
 import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { useVModel } from '@vueuse/core';
 import { storeToRefs } from 'pinia';

@@ -18,8 +18,9 @@
       "vuetify"
     ],
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@/*": ["./src/*"]
+    },
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",

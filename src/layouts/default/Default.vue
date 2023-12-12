@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import GlobalMessage from '@/components/GlobalMessage';
+import GlobalMessage from '@/components/GlobalMessage.vue';
 import { useAppStore } from '@/store/app';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
