@@ -34,11 +34,11 @@ export const useDistortionStore = defineStore('distortion', () => {
   const distortionArguments = ref<number[]>([]);
 
   // distort() options
-  const imageVirtualPixelMethodOption = ref<VirtualPixelMethod>(VirtualPixelMethod.TRANSPARENT);
-  const imageInterpolationMethodOption = ref<InterpolationMethod>(InterpolationMethod.AVERAGE);
+  const virtualPixelMethodOption = ref<VirtualPixelMethod>(VirtualPixelMethod.TRANSPARENT);
+  const interpolationMethodOption = ref<InterpolationMethod>(InterpolationMethod.AVERAGE);
   const imageViewportOffsetOption = ref<[number, number]>([0, 0]);
   const imageBackgroundColorOption = ref<string>();
-  const resamplerOption = ref<keyof ColorResamplerFactoriesPoolKeyMap | string>('point');
+  const preferredResamplerOption = ref<keyof ColorResamplerFactoriesPoolKeyMap | string>('point');
   const filterOption = ref<ResampleFilterPreset>();
   const filterBlurOption = ref<number>();
   const filterWindowSupportOption = ref<number>();
@@ -152,10 +152,10 @@ export const useDistortionStore = defineStore('distortion', () => {
       startLoading();
       const distortionOptions: DistortionServiceOptions = {
         imageBackgroundColor: imageBackgroundColorOption.value,
-        imageInterpolationMethod: imageInterpolationMethodOption.value,
+        interpolationMethod: interpolationMethodOption.value,
         imageViewportOffset: imageViewportOffsetOption.value,
-        imageVirtualPixelMethod: imageVirtualPixelMethodOption.value,
-        resampler: resamplerOption.value,
+        virtualPixelMethod: virtualPixelMethodOption.value,
+        preferredResampler: preferredResamplerOption.value,
         filter: filterOption.value,
         filterBlur: filterBlurOption.value,
         filterWindowSupport: filterWindowSupportOption.value,
@@ -169,7 +169,7 @@ export const useDistortionStore = defineStore('distortion', () => {
         distortionArguments.value,
         distortionOptions
       );
-      distortedImage.value = toHTMLCanvasElement(await result.image.getResource());
+      distortedImage.value = toHTMLCanvasElement(result.image.getResource());
       const { x1, y1, x2, y2 } = result.image.getViewport();
       distortionViewport.value = { x1, y1, x2, y2 };
       distortionDuration.value = result.duration;
@@ -200,11 +200,11 @@ export const useDistortionStore = defineStore('distortion', () => {
     sourceImageViewport,
     distortionName,
     distortionArguments,
-    imageVirtualPixelMethodOption,
-    imageInterpolationMethodOption,
+    imageVirtualPixelMethodOption: virtualPixelMethodOption,
+    imageInterpolationMethodOption: interpolationMethodOption,
     imageViewportOffsetOption,
     imageBackgroundColorOption,
-    resamplerOption,
+    resamplerOption: preferredResamplerOption,
     filterOption,
     filterBlurOption,
     filterWindowSupportOption,
