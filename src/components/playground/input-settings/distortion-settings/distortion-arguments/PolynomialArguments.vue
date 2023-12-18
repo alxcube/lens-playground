@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ControlPoints from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/ControlPoints';
+import ControlPoints from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/ControlPoints.vue';
 import { useVModel } from '@vueuse/core';
 import { computed, watch } from 'vue';
 

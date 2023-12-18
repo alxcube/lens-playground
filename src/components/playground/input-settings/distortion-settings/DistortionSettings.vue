@@ -4,7 +4,7 @@ import ArcArgumentsInput from '@/components/playground/input-settings/distortion
 import ControlPoints from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/ControlPoints.vue';
 import GenericArguments from '@/components/playground/input-settings/distortion-settings/distortion-arguments/GenericArguments.vue';
 import PerspectiveMatrixInput from '@/components/playground/input-settings/distortion-settings/distortion-arguments/PerspectiveMatrixInput.vue';
-import PolynomialArguments from '@/components/playground/input-settings/distortion-settings/distortion-arguments/PolynomialArguments';
+import PolynomialArguments from '@/components/playground/input-settings/distortion-settings/distortion-arguments/PolynomialArguments.vue';
 import DistortionSelector from '@/components/playground/input-settings/distortion-settings/DistortionSelector.vue';
 import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
