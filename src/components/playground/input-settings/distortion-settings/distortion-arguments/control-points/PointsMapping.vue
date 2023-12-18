@@ -94,6 +94,7 @@ const { hasRequests } = storeToRefs(useImagePointsTransportStore());
       @set-source="setSourcePoint"
       @set-destination="setDestinationPoint"
       @delete-mapping="emit('delete-mapping', props.index)"
+      :disable-delete="!props.allowDelete"
     />
   </div>
 </template>

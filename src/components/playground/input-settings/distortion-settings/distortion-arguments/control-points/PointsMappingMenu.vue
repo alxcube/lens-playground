@@ -4,7 +4,9 @@ import { useImagePointsTransportStore } from '@/store/imagePointTransport';
 import { storeToRefs } from 'pinia';
 import { onBeforeUnmount, shallowRef, watch } from 'vue';
 
-const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
+const props = withDefaults(defineProps<{ disabled?: boolean; disableDelete?: boolean }>(), {
+  disabled: false
+});
 
 const emit = defineEmits<{
   (e: 'delete-mapping'): void;
@@ -112,7 +114,10 @@ onBeforeUnmount(() => {
         <VListItem @click="pickDestinationPoint" prepend-icon="mdi-target-variant">
           Pick Destination Point
         </VListItem>
-        <VListItem prepend-icon="mdi-delete-forever" @click="emit('delete-mapping')"
+        <VListItem
+          v-if="!props.disableDelete"
+          prepend-icon="mdi-delete-forever"
+          @click="emit('delete-mapping')"
           >Remove Mapping</VListItem
         >
       </VList>

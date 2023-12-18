@@ -8,7 +8,7 @@ const props = withDefaults(
     modelValue: number[];
     disabled?: boolean;
     minControlPoints?: number;
-    errorIndexes?: number[];
+    //errorIndexes?: number[];
   }>(),
   {
     disabled: false,
@@ -24,7 +24,8 @@ const args = useVModel(props, 'modelValue', emit, { passive: true });
 
 const mappings = computed<[number, number, number, number][]>(() => {
   const groups: [number, number, number, number][] = [];
-  for (let offset = 0; offset < args.value.length; offset += 4) {
+  const length = args.value.length;
+  for (let offset = 0; offset < length; offset += 4) {
     let group = args.value.slice(offset, offset + 4);
     const missingCount = 4 - group.length;
     if (missingCount) {

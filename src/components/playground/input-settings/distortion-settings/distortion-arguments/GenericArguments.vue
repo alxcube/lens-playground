@@ -14,7 +14,10 @@ const argsModel = computed({
     return props.modelValue.toString();
   },
   set(val: string) {
-    const array = val.split(',').map(parseFloat);
+    const array = val
+      .trim()
+      .split(/[\s,]+/)
+      .map(parseFloat);
     emit('update:modelValue', array);
   }
 });
