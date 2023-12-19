@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ArgumentsHelpLink from '@/components/playground/input-settings/distortion-settings/ArgumentsHelpLink.vue';
 import AffineMatrixInput from '@/components/playground/input-settings/distortion-settings/distortion-arguments/AffineMatrixInput.vue';
 import ArcArgumentsInput from '@/components/playground/input-settings/distortion-settings/distortion-arguments/ArcArgumentsInput.vue';
 import ControlPoints from '@/components/playground/input-settings/distortion-settings/distortion-arguments/control-points/ControlPoints.vue';
@@ -117,7 +118,10 @@ const arcArguments = computed(() => distortionArguments.value) as ComputedRef<Ar
 
     <VSwitch label="Generic arguments" v-model="genericArguments" density="compact" />
 
-    <h5 class="text-subtitle-2" v-if="distortionName">{{ argumentsTitle }}</h5>
+    <h5 class="text-subtitle-2" v-if="distortionName">
+      {{ argumentsTitle }}
+      <ArgumentsHelpLink :distortion-name="distortionName" />
+    </h5>
     <VMessages
       :messages="validationErrors.args"
       :active="!!validationErrors.args"
