@@ -12,7 +12,7 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: number[]): void;
 }>();
 
-const valueModel = useVModel(props, 'modelValue', emit, { passive: true });
+const valueModel = useVModel(props, 'modelValue', emit, { passive: true, clone: (v) => v.slice() });
 
 const orderModel = computed<number>({
   get() {
@@ -73,6 +73,8 @@ watch(minControlPoints, (value, prev) => {
       density="compact"
       :disabled="props.disabled"
     />
+
+    <h5 class="text-subtitle-2 my-2">Control points</h5>
 
     <ControlPoints
       v-model="controlPointsModel"

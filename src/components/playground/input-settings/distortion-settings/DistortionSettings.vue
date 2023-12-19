@@ -8,7 +8,7 @@ import PolynomialArguments from '@/components/playground/input-settings/distorti
 import DistortionSelector from '@/components/playground/input-settings/distortion-settings/DistortionSelector.vue';
 import { useDistortionStore } from '@/store/distortion';
 import { storeToRefs } from 'pinia';
-import { computed, ComputedRef, watch } from 'vue';
+import { computed, ComputedRef, ref, watch } from 'vue';
 import type {
   ReversePixelMapperFactoriesPoolKeyMap,
   AffineMatrix,
@@ -21,7 +21,12 @@ const props = withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: fa
 const distortionStore = useDistortionStore();
 const { distortionName, distortionArguments, validationErrors } = storeToRefs(distortionStore);
 
+const genericArguments = ref(false);
+
 const argumentsTitle = computed(() => {
+  if (genericArguments.value) {
+    return 'Arguments';
+  }
   switch (distortionName.value) {
     case 'Affine':
     case 'Perspective':
@@ -30,6 +35,8 @@ const argumentsTitle = computed(() => {
       return 'Affine matrix';
     case 'PerspectiveProjection':
       return 'Perspective matrix';
+    case 'Polynomial':
+      return 'Polynomial arguments';
     default:
       return 'Arguments';
   }
@@ -108,6 +115,8 @@ const arcArguments = computed(() => distortionArguments.value) as ComputedRef<Ar
       :errors="validationErrors.distortionName"
     />
 
+    <VSwitch label="Generic arguments" v-model="genericArguments" density="compact" />
+
     <h5 class="text-subtitle-2" v-if="distortionName">{{ argumentsTitle }}</h5>
     <VMessages
       :messages="validationErrors.args"
@@ -115,48 +124,56 @@ const arcArguments = computed(() => distortionArguments.value) as ComputedRef<Ar
       color="rgb(var(--v-theme-error))"
     />
 
-    <VExpandTransition>
-      <ControlPoints
-        v-if="distortionName === 'Affine' || distortionName === 'Perspective'"
-        v-model="distortionArguments"
-        :disabled="props.disabled"
-        :min-control-points="minControlPoints"
-        :error-indexes="validationErrors.invalidArgs"
-      />
+    <GenericArguments
+      v-if="genericArguments"
+      v-model="distortionArguments"
+      :disabled="props.disabled"
+    />
 
-      <AffineMatrixInput
-        v-else-if="distortionName === 'AffineProjection'"
-        v-model="affineMatrix"
-        :disabled="props.disabled"
-        :error-indexes="validationErrors.invalidArgs"
-      />
+    <template v-else>
+      <VExpandTransition>
+        <ControlPoints
+          v-if="distortionName === 'Affine' || distortionName === 'Perspective'"
+          v-model="distortionArguments"
+          :disabled="props.disabled"
+          :min-control-points="minControlPoints"
+          :error-indexes="validationErrors.invalidArgs"
+        />
 
-      <PerspectiveMatrixInput
-        v-else-if="distortionName === 'PerspectiveProjection'"
-        v-model="perspectiveMatrix"
-        :disabled="props.disabled"
-        :error-indexes="validationErrors.invalidArgs"
-      />
+        <AffineMatrixInput
+          v-else-if="distortionName === 'AffineProjection'"
+          v-model="affineMatrix"
+          :disabled="props.disabled"
+          :error-indexes="validationErrors.invalidArgs"
+        />
 
-      <ArcArgumentsInput
-        v-else-if="distortionName === 'Arc'"
-        v-model="arcArguments"
-        :disabled="props.disabled"
-        :error-indexes="validationErrors.invalidArgs"
-      />
+        <PerspectiveMatrixInput
+          v-else-if="distortionName === 'PerspectiveProjection'"
+          v-model="perspectiveMatrix"
+          :disabled="props.disabled"
+          :error-indexes="validationErrors.invalidArgs"
+        />
 
-      <PolynomialArguments
-        v-else-if="distortionName === 'Polynomial'"
-        v-model="distortionArguments"
-        :disabled="props.disabled"
-      />
+        <ArcArgumentsInput
+          v-else-if="distortionName === 'Arc'"
+          v-model="arcArguments"
+          :disabled="props.disabled"
+          :error-indexes="validationErrors.invalidArgs"
+        />
 
-      <GenericArguments
-        v-else-if="!!distortionName"
-        v-model="distortionArguments"
-        :disabled="props.disabled"
-      />
-    </VExpandTransition>
+        <PolynomialArguments
+          v-else-if="distortionName === 'Polynomial'"
+          v-model="distortionArguments"
+          :disabled="props.disabled"
+        />
+
+        <GenericArguments
+          v-else-if="!!distortionName"
+          v-model="distortionArguments"
+          :disabled="props.disabled"
+        />
+      </VExpandTransition>
+    </template>
   </div>
 </template>
 

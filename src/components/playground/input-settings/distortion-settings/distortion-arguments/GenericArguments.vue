@@ -17,7 +17,8 @@ const argsModel = computed({
     const array = val
       .trim()
       .split(/[\s,]+/)
-      .map(parseFloat);
+      .map(parseFloat)
+      .filter((n) => !Number.isNaN(n));
     emit('update:modelValue', array);
   }
 });

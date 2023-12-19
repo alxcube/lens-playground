@@ -20,7 +20,11 @@ const emit = defineEmits<{
   (e: 'update:modelValue', val: number[]): void;
 }>();
 
-const args = useVModel(props, 'modelValue', emit, { passive: true });
+const args = useVModel(props, 'modelValue', emit, {
+  passive: true,
+  clone: (v) => v.slice(),
+  deep: true
+});
 
 const mappings = computed<[number, number, number, number][]>(() => {
   const groups: [number, number, number, number][] = [];

@@ -305,6 +305,27 @@ function validateDistortionArguments(
     }
   }
 
+  if (distortion === 'Polynomial') {
+    const validOrders = [1, 1.5, 2, 3, 4, 5];
+    if (!validOrders.includes(args[0] as number)) {
+      messages.push(`Polynomial order must be one of: ${validOrders.join(', ')}`);
+      invalidIndexes.push(0);
+      checkLimit = 1;
+    } else {
+      if ((args.length - 1) % 4) {
+        messages.push('Control points of Polynomial distortion must be multiple of 4');
+      } else {
+        const order = args[0] as number;
+        const controlPointsCount = Math.round(((order + 1) * (order + 2)) / 2);
+        if ((args.length - 1) / 4 < controlPointsCount) {
+          messages.push(
+            `Polynomial distortion of order ${order} requires at least ${controlPointsCount} control points.`
+          );
+        }
+      }
+    }
+  }
+
   for (let i = 0; i < checkLimit; i++) {
     if (typeof args[i] !== 'number' || Number.isNaN(args[i])) {
       invalidIndexes.push(i);
