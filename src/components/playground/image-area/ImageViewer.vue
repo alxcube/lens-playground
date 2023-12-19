@@ -72,11 +72,11 @@ function fitViewport() {
       width = height * ratio;
     }
 
-    const { x: offsetX, y: offsetY } = props.offset;
-    const x = vpWidth / 2 - width / 2 - offsetX;
-    const y = vpHeight / 2 - height / 2 - offsetY;
-
     const scale = width / props.image.width;
+
+    const { x: offsetX, y: offsetY } = props.offset;
+    const x = vpWidth / 2 - width / 2 - (offsetX * scale);
+    const y = vpHeight / 2 - height / 2 - (offsetY * scale);
 
     if (scaleModel.value !== scale) {
       scaleModel.value = scale;
