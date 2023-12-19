@@ -144,11 +144,22 @@ export const useDistortionStore = defineStore('distortion', () => {
     }
   };
 
+  let abortController: AbortController | undefined;
+
+  const abortDistortion = () => {
+    if (abortController) {
+      abortController.abort();
+      abortController = undefined;
+    }
+  };
+
   const processDistortion = async () => {
     resetDistortionOutput();
+    abortDistortion();
     try {
       validateArguments();
       isProcessingDistortion.value = true;
+      abortController = new AbortController();
       startLoading();
       const distortionOptions: DistortionServiceOptions = {
         imageBackgroundColor: imageBackgroundColorOption.value,
@@ -161,7 +172,8 @@ export const useDistortionStore = defineStore('distortion', () => {
         filterWindowSupport: filterWindowSupportOption.value,
         viewport: viewportOption.value,
         matteColor: matteColorOption.value,
-        outputScaling: outputScalingOption.value
+        outputScaling: outputScalingOption.value,
+        abortSignal: abortController.signal
       };
       const result = await distort(
         sourceImage.value!,
@@ -178,6 +190,7 @@ export const useDistortionStore = defineStore('distortion', () => {
       distortionError.value = e as Error | string;
       addMessage(e as Error | string, 'error');
     } finally {
+      abortController = undefined;
       isProcessingDistortion.value = false;
       finishLoading();
     }
@@ -222,7 +235,8 @@ export const useDistortionStore = defineStore('distortion', () => {
     loadSourceImage,
     resetDistortionOutput,
     processDistortion,
-    useResultAsSource
+    useResultAsSource,
+    abortDistortion
   };
 });
 
